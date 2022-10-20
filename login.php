@@ -155,6 +155,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
             </form>
 
+            <div class="my-5"></div>
+
             <hr style="color:#D91A21;">
         </div>
     </div>

@@ -102,8 +102,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Custom CSS -->
     <link rel="icon" href="/syss/assets/images/SVVRed.png">
     <link rel="stylesheet" href="/syss/assets/style.css">
+
+    <!-- Javascript  -->
     <script src="/syss/assets/script.js"></script>
 
+    <script>
+        const onConfirmRefresh = function(event) {
+            event.preventDefault();
+            return event.returnValue = "Are you sure you want to leave the page?";
+        }
+
+        window.addEventListener("beforeunload", onConfirmRefresh, {
+            capture: true
+        });
+    </script>
+    
     <title>Quiz</title>
 
 </head>
@@ -115,9 +128,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="container">
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
+                    <span class="navbar-brand">
                         <img src="/syss/assets/images/longlogo.png" alt="" height="100" class="d-inline-block align-text-top">
-                    </a>
+                    </span>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -135,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="quiz.php" method="post">
             <?php
 
-            $sqlforqueno = "SELECT * from `questions`";
+            $sqlforqueno = "SELECT * from `questions1`";
             $quenoresult = mysqli_query($conn, $sqlforqueno);
             $randup = mysqli_num_rows($quenoresult);
 
@@ -143,7 +156,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             for ($count = 1; $count <= 10; $count++) {
 
                 $qid = mt_rand(1, $randup);
-                $que_sql = "SELECT * from `questions` WHERE `que_ID` = $qid";
+                $que_sql = "SELECT * from `questions1` WHERE `que_ID` = $qid";
                 $que_result = mysqli_query($conn, $que_sql);
 
                 if (mysqli_num_rows($que_result) == 1) {
@@ -151,27 +164,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         $que_desc = $que_row['que_desc'];
                         $que_img = $que_row['que_img'];
                     }
-                    ?>
-                    
+            ?>
+
                     <div class="container">
                         <div class="question-container my-5">
-                            <p id="que-id<?php echo $count ?>">Question <?php echo $count ?></p>
-                            <p> <?php echo $que_desc ?> </p>
-                            <?php if ($que_img){ ?>
-                                <img src="<?php echo 'data:image/jpg;charset=utf8;base64,'.base64_encode($que_img) ?>" alt="Question Image">
-                                <?php } ?>
-                                
-                                <ul class="list-unstyled">
-                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 1</li>
+                            <p class="text-muted font-italic" id="que-id<?php echo $count ?>">Question <?php echo $count ?>
+                            </p>
+                            <p class="fs-5"> <?php echo $que_desc ?> </p>
+                            <?php if ($que_img) { ?>
+                                <img height="250" class="my-3" src="<?php echo 'data:image/jpg;charset=utf8;base64,' . base64_encode($que_img) ?>" alt="Question Image">
+                            <?php } ?>
 
+                            <ul class="list-unstyled mx-3">
+                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 1</li>
                                 <li><input type="radio" name="que-id<?php echo $count ?>">question option 2</li>
                                 <li><input type="radio" name="que-id<?php echo $count ?>">question option 3</li>
                                 <li><input type="radio" name="que-id<?php echo $count ?>">question option 4</li>
                             </ul>
                         </div>
-                    </div> 
+                        <hr>
+                    </div>
 
-                <?php  
+            <?php
                 }
             } ?>
 

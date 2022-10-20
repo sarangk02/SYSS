@@ -166,7 +166,11 @@ p.footer-links a:hover {
     color: #B81F24;
 }
 
-
+#diff-line {
+    width: 40px;
+    height: 20px;
+    background-color: black;
+}
 
 /* logo = #B81F24
 log title = #A60700
