@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     Admin settings
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li><a class="dropdown-item sub-nav-links" href="#">Add Question</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="AddQue.php">Add Question</a></li>
                     <li><a class="dropdown-item sub-nav-links" href="#">View Student</a></li>
                     <li><a class="dropdown-item sub-nav-links" href="#">View Queries</a></li>
                     <li><a class="dropdown-item sub-nav-links" href="#">View Results</a></li>

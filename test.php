@@ -128,3 +128,89 @@ if (mysqli_num_rows($result) > 0) {
 
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+Question answers form
+
+
+            <form action="quiz.php" method="post">
+            <?php
+
+            $sqlforqueno = "SELECT * from `questions1`";
+            $quenoresult = mysqli_query($conn, $sqlforqueno);
+            $randup = mysqli_num_rows($quenoresult);
+
+
+            for ($count = 1; $count <= 10; $count++) {
+
+                $qid = mt_rand(1, $randup);
+                $que_sql = "SELECT * from `questions1` WHERE `que_ID` = $qid";
+                $que_result = mysqli_query($conn, $que_sql);
+
+                if (mysqli_num_rows($que_result) == 1) {
+                    while ($que_row = mysqli_fetch_assoc($que_result)) {
+                        $que_desc = $que_row['que_desc'];
+                        $que_img = $que_row['que_img'];
+                    }
+            ?>
+
+                    <div class="container">
+                        <div class="question-container my-5">
+                            <p class="text-muted font-italic" id="que-id<?php echo $count ?>">Question <?php echo $count ?>
+                            </p>
+                            <p class="fs-5"> <?php echo $que_desc ?> </p>
+                            <?php if ($que_img) { ?>
+                                <img height="250" class="my-3" src="<?php echo 'data:image/jpg;charset=utf8;base64,' . base64_encode($que_img) ?>" alt="Question Image">
+                            <?php } ?>
+
+                            <ul class="list-unstyled mx-3">
+
+                                <?php
+                                $ans_sql = "SELECT * from `options1` WHERE `opt_for_QID` = $qid";
+                                $ans_result = mysqli_query($conn, $ans_sql);
+
+                                if (mysqli_num_rows($ans_result) >= 1) {
+                                    while ($ans_row = mysqli_fetch_assoc($ans_result)) {
+                                        $ans_desc = $que_row['que_desc'];
+                                        echo '<li><input type="radio" name="que-id' . $count . '">' . $ans_desc . '</li>';
+                                    }
+                                }
+                                ?>
+                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 2</li>
+                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 3</li>
+                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 4</li>
+
+                            </ul>
+                        </div>
+                        <hr>
+                    </div>
+
+            <?php
+                }
+            } ?>
+
+
+
+
+
+            <div class="d-flex justify-content-center">
+                <div class="mt-3 d-grid gap-2 col-3 mx-2">
+                    <button type="submit" class="btn btn-outline-danger">Submit</button>
+                </div>
+                <div class="mt-3 d-grid gap-2 col-1 mx-2">
+                    <button type="submit" class="btn btn-outline-dark">Abort Quiz</button>
+                </div>
+            </div>
+
+        </form>

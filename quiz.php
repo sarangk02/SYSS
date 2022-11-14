@@ -116,7 +116,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             capture: true
         });
     </script>
-    
+
     <title>Quiz</title>
 
 </head>
@@ -144,6 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1 class="text-center" style="color: #B81F24;">Quiz</h1>
         </div>
         <hr style="color:#D91A21;">
+
+        
 
         <form action="quiz.php" method="post">
             <?php
@@ -176,10 +178,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <?php } ?>
 
                             <ul class="list-unstyled mx-3">
-                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 1</li>
-                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 2</li>
-                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 3</li>
-                                <li><input type="radio" name="que-id<?php echo $count ?>">question option 4</li>
+
+                                <?php
+                                $opt_sql = "SELECT * from `options1` WHERE `opt_for_QID` = $qid";
+                                $opt_result = mysqli_query($conn, $opt_sql);
+
+                                if (mysqli_num_rows($opt_result) >= 1) {
+                                    while ($opt_row = mysqli_fetch_assoc($opt_result)) {
+                                        $opt_desc = $opt_row['opt_desc'];
+                                        echo '<li class="my-2"><input class="mx-1" type="radio" name="que-id'.$count.'">'.$opt_desc.'</li>';
+                                    }
+                                }
+                                ?>
+
                             </ul>
                         </div>
                         <hr>
@@ -188,9 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php
                 }
             } ?>
-
-
-
 
 
             <div class="d-flex justify-content-center">
@@ -203,6 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
         </form>
+
 
     </div>
 

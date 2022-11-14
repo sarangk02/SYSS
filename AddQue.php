@@ -1,0 +1,221 @@
+<?php
+session_start();
+
+
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
+    header("location: login.php");
+    exit;
+}
+
+if ($_SESSION['loggedin_admin'] == false || $_SESSION['loggedin_user'] == true) {
+    header("location: index.php");
+    exit;
+}
+
+include('_dbconnect.php');
+
+$showquerysuccess = false;
+$showqueryerror = false;
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $que = $_POST['question'];
+    $difficulty = 'questions' . $_POST["quediff"];
+    echo $que.' '.$difficulty;
+
+    $file = $_FILES['file'];
+    print_r($file);
+    
+
+    // $image = base64_encode(file_get_contents(addslashes($name)));
+    
+    // $sql1 = "INSERT INTO `$difficulty` (`que_desc`, `que_img`) VALUES ('$que', '$image')";
+
+    // $sql1 = "INSERT INTO `$difficulty` (`que_desc`) VALUES ('$que')";
+
+    // $result1 = mysqli_query($conn, $sql1);
+
+    // if ($result1) {
+    //     $showquerysuccess = true;
+    // } else {
+    //     $showqueryerror = true;
+    // }
+}
+
+
+?>
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- Google script -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="22159779186-v4i4q28ohjt9a1geg5ph8fu3jj1b8smf.apps.googleusercontent.com">
+
+    <!-- Custom CSS -->
+    <link rel="icon" href="/syss/assets/images/SVVRed.png">
+    <link rel="stylesheet" href="/syss/assets/style.css">
+    <script src="/syss/assets/script.js"></script>
+
+    <title>Home</title>
+
+</head>
+
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+    <!-- <body> -->
+    <header>
+        <!-- Navbar -->
+        <div class="container">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="index.php">
+                        <img src="/syss/assets/images/longlogo.png" alt="" height="100" class="d-inline-block align-text-top">
+                    </a>
+                    <div class="navbar-text">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary dropdown-toggle" style="background-color: #00397A;" data-bs-toggle="dropdown" aria-expanded="false">
+                                <?php echo $_SESSION['username']; ?>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <?php
+                                if ($_SESSION['loggedin_user'] == true) {
+                                    echo
+                                    '<li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                                
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>';
+                                } ?>
+
+                                <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+            </nav>
+        </div>
+        <div class="container mb-2">
+            <ul class="nav justify-content-center">
+                <?php
+                if ($_SESSION['loggedin_user'] == true) {
+                    echo
+                    '<li class=" nav-item"><a class="sub-nav-links nav-link" href="#contact">Contact</a></li>';
+                } ?>
+
+
+                <?php
+                if ($_SESSION['loggedin_admin'] == true) {
+                    echo
+                    '<li class="nav-item dropdown">
+                    <a class="sub-nav-links nav-link dropdown-toggle" style="color: #B81F24;" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Admin settings
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item sub-nav-links" href="#">Add Question</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="#">View Student</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="#">View Queries</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="#">View Results</a></li>
+                    </ul>
+                    </li>';
+                }
+                ?>
+
+            </ul>
+        </div>
+    </header>
+
+    <?php
+    if ($showquerysuccess) {
+
+        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>Success!</strong> Your Question has been successfully added.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+    };
+    if ($showqueryerror) {
+
+        echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Oops!</strong> Something went wrong.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>';
+    };
+
+    ?>
+    <!-- contact -->
+    <div id="contact" class="container position-relative">
+
+        <div class="form-container">
+            <div>
+                <h1 class="text-center">Add Question</h1>
+            </div>
+            <hr style="color:#D91A21;">
+
+
+            <form action="AddQue.php" method="POST" enctype="multipart/form-data">
+                <div class="mb-2 w-75 mx-auto">
+                    <label for="question" class="form-label">Question</label>
+                    <textarea placeholder="Enter Detailed Question here" type="text" rows="3" class="form-control" id="question" name="question" required></textarea>
+                </div>
+
+                <div class="mb-2 w-75 mx-auto">
+                    <label for="question" class="form-label">Image</label>  <br>
+                    <input type="file" name="file" accept="image/*">
+                </div>
+
+                <div class="mb-2 w-75 mx-auto">
+                    <label for="quediff" class="form-label">Difficulty</label>
+                    <br>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="quediff" id="quediff1" value="1" required>
+                        <label class="form-check-label" for="quediff1">Basic</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="quediff" id="quediff2" value="2">
+                        <label class="form-check-label" for="quediff2">Intermediate</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="quediff" id="quediff3" value="3">
+                        <label class="form-check-label" for="quediff3">Advanced</label>
+                    </div>
+                </div>
+
+                <!-- <div class="mb-2 w-75 mx-auto">
+                    <label for="formquery" class="form-label">Options</label>
+                    <ul class="list-unstyled">
+                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt1" name="opt1" placeholder="Option 1" required></li>
+                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt2" name="opt2" placeholder="Option 2" required></li>
+                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt3" name="opt3" placeholder="Option 3" required></li>
+                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt4" name="opt4" placeholder="Option 4" required></li>
+                    </ul>
+                </div> -->
+
+                <div class="mt-3 d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" value="submit" class="btn btn-outline-danger">Add Question</button>
+                </div>
+            </form>
+            <hr style="color:#D91A21;">
+        </div>
+    </div>
+
+
+    <div class="my-5"></div>
+
+    <!-- Footer -->
+    <?php require "_footer.php" ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
