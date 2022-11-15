@@ -16,30 +16,70 @@ include('_dbconnect.php');
 
 $showquerysuccess = false;
 $showqueryerror = false;
+$showqueryerrormsg = '';
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+
+    // Adding Question to Database
     $que = $_POST['question'];
     $difficulty = 'questions' . $_POST["quediff"];
-    echo $que.' '.$difficulty;
-
     $file = $_FILES['file'];
-    print_r($file);
-    
 
-    // $image = base64_encode(file_get_contents(addslashes($name)));
-    
-    // $sql1 = "INSERT INTO `$difficulty` (`que_desc`, `que_img`) VALUES ('$que', '$image')";
+    if (is_uploaded_file($file['tmp_name'])) {
+        if ($file['size'] <= 16777215) {
+            if ($file['type'] == 'jpg' || 'png' || 'jpeg') {
+                $image = $file['tmp_name'];
+                $sql1 = "INSERT INTO `$difficulty` (`que_desc`, `que_img`) VALUES ('$que', '" . mysqli_escape_string($conn, file_get_contents($image)) . "')";
 
-    // $sql1 = "INSERT INTO `$difficulty` (`que_desc`) VALUES ('$que')";
+                $result1 = mysqli_query($conn, $sql1);
+                if ($result1) {
+                    $showquerysuccess = true;
+                } else {
+                    $showqueryerror = true;
+                    $showqueryerrormsg = 'Something went wrong. Question didnt added';
+                }
+            } else {
+                $showqueryerror = true;
+                $showqueryerrormsg = 'Invalid File Format. Suggested formats are jpg, png and jpeg';
+            }
+        } else {
+            $showqueryerror = true;
+            $showqueryerrormsg = 'File Size limit exceeded. File size must be within 16 MB';
+        }
+    } else {
+        $sql1 = "INSERT INTO `$difficulty` (`que_desc`) VALUES ('$que')";
 
-    // $result1 = mysqli_query($conn, $sql1);
+        $result1 = mysqli_query($conn, $sql1);
+        if ($result1) {
+            $showquerysuccess = true;
+        } else {
+            $showqueryerror = true;
+            $showqueryerrormsg = 'Something went wrong. Question didnt added';
+        }
+    }
 
-    // if ($result1) {
-    //     $showquerysuccess = true;
-    // } else {
-    //     $showqueryerror = true;
-    // }
+    // Adding answers to Database 
+    $sql2 = "SELECT * FROM `$difficulty` ORDER BY que_ID DESC LIMIT 1;";
+    $result2 = mysqli_query($conn, $sql2);
+    $r2_row = mysqli_fetch_assoc($result2);
+    $queID = $r2_row['que_ID'];
+
+    $option = 'options' . $_POST["quediff"];
+    // corr_opt
+
+    for ($x = 1; $x <= 4; $x++) {
+        $opt_desc = $_POST['opt' . $x];
+
+        if ($x ==  $_POST['corr_opt']) {
+            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`, `correct_ans`) VALUES ('$opt_desc', '$queID', 1);";
+        } else {
+            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`) VALUES ('$opt_desc', '$queID');";
+        }
+
+        $result = mysqli_query($conn, $sql);
+    }
 }
 
 
@@ -69,7 +109,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="/syss/assets/style.css">
     <script src="/syss/assets/script.js"></script>
 
-    <title>Home</title>
+    <title>Add Question</title>
 
 </head>
 
@@ -146,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($showqueryerror) {
 
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Oops!</strong> Something went wrong.
+                <strong>Oops!</strong>' . $showqueryerrormsg . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>';
     };
@@ -169,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="mb-2 w-75 mx-auto">
-                    <label for="question" class="form-label">Image</label>  <br>
+                    <label for="question" class="form-label">Image</label> <br>
                     <input type="file" name="file" accept="image/*">
                 </div>
 
@@ -189,16 +229,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <label class="form-check-label" for="quediff3">Advanced</label>
                     </div>
                 </div>
+                <hr style="color:#D91A21;">
 
-                <!-- <div class="mb-2 w-75 mx-auto">
-                    <label for="formquery" class="form-label">Options</label>
+                <div class="w-75 mx-auto">
                     <ul class="list-unstyled">
-                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt1" name="opt1" placeholder="Option 1" required></li>
-                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt2" name="opt2" placeholder="Option 2" required></li>
-                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt3" name="opt3" placeholder="Option 3" required></li>
-                        <li class="w-75 my-1"><input type="text" class="form-control" id="opt4" name="opt4" placeholder="Option 4" required></li>
+                        <li class="w-75 my-1">Option 1 -<input type="text" class="form-control" id="opt1" name="opt1" placeholder="Option 1" required></li>
+                        <li class="w-75 my-1">Option 2 -<input type="text" class="form-control" id="opt2" name="opt2" placeholder="Option 2" required></li>
+                        <li class="w-75 my-1">Option 3 -<input type="text" class="form-control" id="opt3" name="opt3" placeholder="Option 3" required></li>
+                        <li class="w-75 my-1">Option 4 -<input type="text" class="form-control" id="opt4" name="opt4" placeholder="Option 4" required></li>
                     </ul>
-                </div> -->
+                    <label for="corr_opt" class="form-label">Correct Option</label>
+                    <div class="col-auto my-1">
+                        <select class="form-select p-1 mr-sm-2 w-50" multiple required name="corr_opt" id="corr_opt">
+                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="1">Option 1</option>
+                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="2">Option 2</option>
+                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="3">Option 3</option>
+                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="4">Option 4</option>
+                        </select>
+                    </div>
+                </div>
+                <hr style="color:#D91A21;">
 
                 <div class="mt-3 d-grid gap-2 col-6 mx-auto">
                     <button type="submit" value="submit" class="btn btn-outline-danger">Add Question</button>
