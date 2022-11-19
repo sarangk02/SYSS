@@ -5,7 +5,7 @@
                 <li><a href="https://www.facebook.com/kjsieitofficial" target="_blank"><img src="/syss/assets/images/icon_fb.png" alt="" style="max-width: 30px;"></a></li>
                 <li><a href="https://www.linkedin.com/in/kjsieit/" target="_blank"><img src="/syss/assets/images/icon_linkedin.png" alt="" style="max-width: 30px;"></a></li>
                 <li><a href="https://twitter.com/kjsieit1" target="_blank"><img src="/syss/assets/images/icon_twitter.png" alt="" style="max-width: 30px;"></a></li>
-                <li><a href="https://www.instagram.com/kjsieit_22/" target="_blank"><img src="/syss/assets/images/icon_insta.png" alt="" style="max-width: 30px;"></a></li>
+                <li><a href="https://www.instagram.com/kjsieit_official/" target="_blank"><img src="/syss/assets/images/icon_insta.png" alt="" style="max-width: 30px;"></a></li>
                 <li><a href="https://www.youtube.com/kjsieitofficial" target="_blank"><img src="/syss/assets/images/icon_yt.png" alt="" style="max-width: 30px;"></a></li>
             </ul>
             <div>

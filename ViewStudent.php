@@ -109,14 +109,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="/syss/assets/style.css">
     <script src="/syss/assets/script.js"></script>
 
-    <title>Add Question</title>
+    <title>View Student</title>
 
 </head>
 
 <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
     <!-- <body> -->
     <?php require "_header.php";
-    
+
     if ($showquerysuccess) {
 
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -129,72 +129,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Oops!</strong>' . $showqueryerrormsg . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                </div>';    
     };
 
     ?>
-    <!-- contact -->
+
+    <!-- Students -->
     <div id="contact" class="container position-relative">
 
         <div class="form-container">
             <div>
-                <h1 class="text-center">Add Question</h1>
+                <h1 class="text-center">View Student</h1>
             </div>
             <hr style="color:#D91A21;">
 
+            <div style="height: 700px;"></div>
 
-            <form action="AddQue.php" method="POST" enctype="multipart/form-data">
-                <div class="mb-2 w-75 mx-auto">
-                    <label for="question" class="form-label">Question</label>
-                    <textarea placeholder="Enter Detailed Question here" type="text" rows="3" class="form-control" id="question" name="question" required></textarea>
-                </div>
-
-                <div class="mb-2 w-75 mx-auto">
-                    <label for="question" class="form-label">Image</label> <br>
-                    <input type="file" name="file" accept="image/*">
-                </div>
-
-                <div class="mb-2 w-75 mx-auto">
-                    <label for="quediff" class="form-label">Difficulty</label>
-                    <br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="quediff" id="quediff1" value="1" required>
-                        <label class="form-check-label" for="quediff1">Basic</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="quediff" id="quediff2" value="2">
-                        <label class="form-check-label" for="quediff2">Intermediate</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="quediff" id="quediff3" value="3">
-                        <label class="form-check-label" for="quediff3">Advanced</label>
-                    </div>
-                </div>
-                <hr style="color:#D91A21;">
-
-                <div class="w-75 mx-auto">
-                    <ul class="list-unstyled">
-                        <li class="w-75 my-1">Option 1 -<input type="text" class="form-control" id="opt1" name="opt1" placeholder="Option 1" required></li>
-                        <li class="w-75 my-1">Option 2 -<input type="text" class="form-control" id="opt2" name="opt2" placeholder="Option 2" required></li>
-                        <li class="w-75 my-1">Option 3 -<input type="text" class="form-control" id="opt3" name="opt3" placeholder="Option 3" required></li>
-                        <li class="w-75 my-1">Option 4 -<input type="text" class="form-control" id="opt4" name="opt4" placeholder="Option 4" required></li>
-                    </ul>
-                    <label for="corr_opt" class="form-label">Correct Option</label>
-                    <div class="col-auto my-1">
-                        <select class="form-select p-1 mr-sm-2 w-50" multiple required name="corr_opt" id="corr_opt">
-                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="1">Option 1</option>
-                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="2">Option 2</option>
-                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="3">Option 3</option>
-                            <option class="px-2" style="padding-top: 3px; padding-bottom: 3px;" value="4">Option 4</option>
-                        </select>
-                    </div>
-                </div>
-                <hr style="color:#D91A21;">
-
-                <div class="mt-3 d-grid gap-2 col-6 mx-auto">
-                    <button type="submit" value="submit" class="btn btn-outline-danger">Add Question</button>
-                </div>
-            </form>
             <hr style="color:#D91A21;">
         </div>
     </div>

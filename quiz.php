@@ -7,78 +7,62 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     exit;
 }
 
+
 switch ($_GET['catid']) {
     case 1:
-        $diff = 'basic';
+        $diff = 1;
+        $diffname = 'Basic';
+        $quedb = 'questions1';
+        $ansdb = 'options1';
         break;
     case 2:
-        $diff = 'intermediate';
+        $diff = 2;
+        $diffname = 'Intermediate';
+        $quedb = 'questions2';
+        $ansdb = 'options2';
         break;
     case 3:
-        $diff = 'advanced';
+        $diff = 3;
+        $diffname = 'Advanced';
+        $quedb = 'questions3';
+        $ansdb = 'options3';
         break;
     case 4:
-        $diff = 'dynamic';
+        $diff = 4;
+        $diffname = 'Dynamic';
         break;
 }
 
 require_once '_dbconnect.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
+if ($_SERVER["REQUEST_METHOD"] == "POST" && ($diff = 1 || 2 || 3)) {
 
-    if (isset($_POST['admin_login']) && $_POST['admin_login'] == 'Yes') {
-        $sql = "SELECT * from `admins` where `username` = '$username'";
-        $result = mysqli_query($conn, $sql);
-        $num = mysqli_num_rows($result);
-        if ($num == 1) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                if (password_verify($password, $row['password'])) {
-                    if ($password == $row['password']) {
-                        $login = true;
-                        session_start();
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['username'] = $username;
-                        $_SESSION['loggedin_admin'] = true;
-                        $_SESSION['loggedin_user'] = false;
-                        header('location: index.php');
-                    } else {
-                        $showError = true;
-                    }
-                }
-            }
-        } else {
+    $score = 0;
 
-            $sql = "SELECT * from `users` where `username` = '$username' ";
-            $result = mysqli_query($conn, $sql);
-            $num = mysqli_num_rows($result);
-            if ($num == 1) {
-                while ($row = mysqli_fetch_assoc($result)) {
-                    if (password_verify($password, $row['password'])) {
-                        if ($password == $row['password']) {
-                            $login = true;
-                            session_start();
-                            $_SESSION['loggedin'] = true;
-                            $_SESSION['username'] = $username;
-                            $_SESSION['loggedin_user'] = true;
-                            $_SESSION['loggedin_admin'] = false;
-                            header('location: index.php');
-                        } else {
-                            $showError = true;
-                        }
-                    }
-                }
-            }
+    for ($x = 1; $x <= 10; $x++) {
+        $selection = $_POST["que-id" . $x];
+        $anssql = ("SELECT * from $ansdb where `opt_desc` = '$selection'");
+        $ansrslt = mysqli_query($conn, $anssql);
+        // print_r($ansrslt);
+        $ansrow = mysqli_fetch_assoc($ansrslt);
+        if ($ansrow['correct_ans'] == 1) {
+            $score = $score + 1;
         }
     }
+
+    $user = $_SESSION['username'];
+
+    $result = mysqli_query($conn, "SELECT * FROM `users` where `username` = '$user'");
+    if (mysqli_num_rows($result) == 1) {
+        while ($row = mysqli_fetch_array($result)) {
+            $student_ID = $row["student_ID"];
+            $name = $row["first_name"] . " " . $row["last_name"];
+
+            $log_rslt = mysqli_query($conn, "INSERT INTO `testlog` (`stud_ID`, `stud_name`, `test_diffi`, `score`) VALUES ('$student_ID', '$name', '$diffname', '$score');");
+        }
+    }
+    header("location: index.php");
 }
-
-
-
-
-
-
 
 ?>
 
@@ -106,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Javascript  -->
     <script src="/syss/assets/script.js"></script>
 
-    <script>
+    <!-- <script>
         const onConfirmRefresh = function(event) {
             event.preventDefault();
             return event.returnValue = "Are you sure you want to leave the page?";
@@ -115,7 +99,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         window.addEventListener("beforeunload", onConfirmRefresh, {
             capture: true
         });
-    </script>
+    </script> -->
 
     <title>Quiz</title>
 
@@ -145,12 +129,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
         <hr style="color:#D91A21;">
 
-        
 
-        <form action="quiz.php" method="post">
+
+        <form action="quiz.php?catid=<?php echo $diff ?>" method="post">
             <?php
 
-            $sqlforqueno = "SELECT * from `questions1`";
+            $sqlforqueno = "SELECT * from $quedb";
             $quenoresult = mysqli_query($conn, $sqlforqueno);
             $randup = mysqli_num_rows($quenoresult);
 
@@ -158,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             for ($count = 1; $count <= 10; $count++) {
 
                 $qid = mt_rand(1, $randup);
-                $que_sql = "SELECT * from `questions1` WHERE `que_ID` = $qid";
+                $que_sql = "SELECT * from $quedb WHERE `que_ID` = $qid";
                 $que_result = mysqli_query($conn, $que_sql);
 
                 if (mysqli_num_rows($que_result) == 1) {
@@ -180,17 +164,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <ul class="list-unstyled mx-3">
 
                                 <?php
-                                $opt_sql = "SELECT * from `options1` WHERE `opt_for_QID` = $qid";
+                                $opt_sql = "SELECT * from $ansdb WHERE `opt_for_QID` = $qid";
                                 $opt_result = mysqli_query($conn, $opt_sql);
-
+                                // print_r($opt_result);
                                 if (mysqli_num_rows($opt_result) >= 1) {
                                     while ($opt_row = mysqli_fetch_assoc($opt_result)) {
-                                        $opt_desc = $opt_row['opt_desc'];
-                                        echo '<li class="my-2"><input class="mx-1" type="radio" name="que-id'.$count.'">'.$opt_desc.'</li>';
+                                        echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $opt_row['opt_desc'] . '">' . $opt_row['opt_desc'] . '</li>';
                                     }
                                 }
                                 ?>
-
                             </ul>
                         </div>
                         <hr>
@@ -202,11 +184,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
             <div class="d-flex justify-content-center">
+
                 <div class="mt-3 d-grid gap-2 col-3 mx-2">
-                    <button type="submit" class="btn btn-outline-danger">Submit</button>
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#confirmsubmit">Submit</button>
                 </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="confirmsubmit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm Submission ?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container d-flex justify-content-evenly">
+                                    <button type="submit" class="btn btn-outline-danger">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="mt-3 d-grid gap-2 col-1 mx-2">
-                    <button type="submit" class="btn btn-outline-dark">Abort Quiz</button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#confirmabort" class="btn btn-outline-dark">Abort Quiz</button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="confirmabort" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Confirm abortion ?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>If you abort the Quiz, then you will lose the current Quiz progress and will be <b>Signed Out</b></p>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="container d-flex justify-content-evenly">
+                                    <button type="button" class="btn btn-outline-dark"><a href="logout.php">Abort the Quiz</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -215,7 +237,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     </div>
 
-    <script src="https:cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https:cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
 
 </body>
 

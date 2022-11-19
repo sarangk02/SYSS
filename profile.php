@@ -7,7 +7,7 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
     header("location: index.php");
     exit;
 }
-  
+
 ?>
 
 <!DOCTYPE html>
@@ -35,8 +35,9 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
 
 </head>
 
-    <!-- <body oncontextmenu="return false;"> -->
-    <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<!-- <body oncontextmenu="return false;"> -->
+
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
     <!-- Navbar -->
     <header>
         <div class="container">
@@ -46,17 +47,17 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
                         <img src="/syss/assets/images/longlogo.png" alt="long_logo" height="100" class="d-inline-block align-text-top">
                     </a>
                     <div class="btn-group">
-                            <button type="button" class="btn btn-primary dropdown-toggle" style="background-color: #00397A;" data-bs-toggle="dropdown" aria-expanded="false">
-                                <?php echo $_SESSION['username']; ?>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
-                            </ul>
-                        </div>
+                        <button type="button" class="btn btn-primary dropdown-toggle" style="background-color: #00397A;" data-bs-toggle="dropdown" aria-expanded="false">
+                            <?php echo $_SESSION['username']; ?>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
+                        </ul>
+                    </div>
                 </div>
             </nav>
         </div>
@@ -76,7 +77,7 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-5">
                     <label class="input-label form-label">Name</label>
-                    <label class="output-label form-label"><?php echo $first_name." ".$last_name ?></label>
+                    <label class="output-label form-label"><?php echo $first_name . " " . $last_name ?></label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">UserName</label>
@@ -144,7 +145,7 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
             <hr style="color:#D91A21;">
 
             <!-- Test stat table -->
-            <div class="d-flex justify-content-evenly">
+            <!-- <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-4">
                     <label class="input-label form-label">General Stats</label>
                     <table class="profile-stat-table">
@@ -175,42 +176,41 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
                         </tr>
                     </table>
                 </div>
-            </div>
+            </div> -->
+
             <!-- Test Log -->
             <div class="d-flex justify-content-evenly">
-                <div class="d-inline-block mb-2 col-12">
+                <div class="d-inline-block mb-2 col-md-8">
                     <label class="input-label form-label">Test Log</label>
                     <div class="table-responsive">
-                        <table class="table table-hover table-bordereless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Sr. No.</th>
-                                    <th scope="col">Test Type</th>
-                                    <th scope="col">Score</th>
-                                    <th scope="col">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Advanced</td>
-                                    <td>20</td>
-                                    <td>23rd Sept, 2022</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Dynamic</td>
-                                    <td>10</td>
-                                    <td>21rd Sept, 2022</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td>Basic</td>
-                                    <td>15</td>
-                                    <td>2rd Sept, 2022</td>
-                                </tr>
+
+                        <?php
+                        $logs_rslt = mysqli_query($conn, "SELECT * FROM `testlog` WHERE stud_ID = '$student_ID'");
+                        if (mysqli_num_rows($logs_rslt) >= 1) {
+                            echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+
+                            while ($row = mysqli_fetch_array($logs_rslt)) {
+                                echo '<tr>
+                                        <td>' . $row['test_diffi'] . '</td>
+                                        <td>' . $row['score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                            }
+                            echo '
                             </tbody>
-                        </table>
+                            </table>';
+                        } else {
+                            echo '<h4>No tests given yet</h4>';
+                        }
+                        ?>
                     </div>
                 </div>
             </div>
