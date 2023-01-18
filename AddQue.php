@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Adding Question to Database
     $que = $_POST['question'];
     $difficulty = 'questions' . $_POST["quediff"];
+
     $file = $_FILES['file'];
 
     if (is_uploaded_file($file['tmp_name'])) {
@@ -115,25 +116,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
     <!-- <body> -->
-    <?php require "_header.php";
-    
+    <?php
+
+    require "_header.php";
+
     if ($showquerysuccess) {
 
         echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Your Question has been successfully added.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                    <strong>Success!</strong> Your Question has been successfully added.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
     };
     if ($showqueryerror) {
 
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Oops!</strong>' . $showqueryerrormsg . '
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
+                    <strong>Oops!</strong>' . $showqueryerrormsg . '
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
     };
 
     ?>
-    <!-- contact -->
+
     <div id="contact" class="container position-relative">
 
         <div class="form-container">
@@ -198,9 +201,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <hr style="color:#D91A21;">
         </div>
     </div>
-
-
-    <div class="my-5"></div>
 
     <!-- Footer -->
     <?php require "_footer.php" ?>

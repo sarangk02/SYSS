@@ -46,6 +46,8 @@
                     <li><a class="dropdown-item sub-nav-links" href="AddQue.php">Add Question</a></li>
                     <li><a class="dropdown-item sub-nav-links" href="ViewStudent.php">View Student</a></li>
                     <li><a class="dropdown-item sub-nav-links" href="ViewResults.php">View Results</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="AddQuiz.php">Add Quiz</a></li>
+                    <li><a class="dropdown-item sub-nav-links" href="ViewQuiz.php">View Quiz</a></li>
                     </ul>
                     </li>';
                 }

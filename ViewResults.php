@@ -23,62 +23,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     // Adding Question to Database
-    $que = $_POST['question'];
-    $difficulty = 'questions' . $_POST["quediff"];
-    $file = $_FILES['file'];
+    $studID = $_POST['student_ID'];
 
-    if (is_uploaded_file($file['tmp_name'])) {
-        if ($file['size'] <= 16777215) {
-            if ($file['type'] == 'jpg' || 'png' || 'jpeg') {
-                $image = $file['tmp_name'];
-                $sql1 = "INSERT INTO `$difficulty` (`que_desc`, `que_img`) VALUES ('$que', '" . mysqli_escape_string($conn, file_get_contents($image)) . "')";
+    $searchrslt = mysqli_query($conn, "SELECT * FROM `testlog` WHERE `stud_ID` = $studID");
 
-                $result1 = mysqli_query($conn, $sql1);
-                if ($result1) {
-                    $showquerysuccess = true;
-                } else {
-                    $showqueryerror = true;
-                    $showqueryerrormsg = 'Something went wrong. Question didnt added';
-                }
-            } else {
-                $showqueryerror = true;
-                $showqueryerrormsg = 'Invalid File Format. Suggested formats are jpg, png and jpeg';
-            }
-        } else {
-            $showqueryerror = true;
-            $showqueryerrormsg = 'File Size limit exceeded. File size must be within 16 MB';
-        }
+    if ($searchrslt) {
+        $showquerysuccess = true;
     } else {
-        $sql1 = "INSERT INTO `$difficulty` (`que_desc`) VALUES ('$que')";
-
-        $result1 = mysqli_query($conn, $sql1);
-        if ($result1) {
-            $showquerysuccess = true;
-        } else {
-            $showqueryerror = true;
-            $showqueryerrormsg = 'Something went wrong. Question didnt added';
-        }
-    }
-
-    // Adding answers to Database 
-    $sql2 = "SELECT * FROM `$difficulty` ORDER BY que_ID DESC LIMIT 1;";
-    $result2 = mysqli_query($conn, $sql2);
-    $r2_row = mysqli_fetch_assoc($result2);
-    $queID = $r2_row['que_ID'];
-
-    $option = 'options' . $_POST["quediff"];
-    // corr_opt
-
-    for ($x = 1; $x <= 4; $x++) {
-        $opt_desc = $_POST['opt' . $x];
-
-        if ($x ==  $_POST['corr_opt']) {
-            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`, `correct_ans`) VALUES ('$opt_desc', '$queID', 1);";
-        } else {
-            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`) VALUES ('$opt_desc', '$queID');";
-        }
-
-        $result = mysqli_query($conn, $sql);
+        $showqueryerror = true;
+        $showqueryerrormsg = 'Something went wrong. Unable to find results.';
     }
 }
 
@@ -117,13 +70,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- <body> -->
     <?php require "_header.php";
 
-    if ($showquerysuccess) {
-
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Your Question has been successfully added.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-    };
     if ($showqueryerror) {
 
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -143,8 +89,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <hr style="color:#D91A21;">
 
-            <div style="height: 700px;">
-                Hola
+            <form action="ViewResults.php" method="POST" enctype="multipart/form-data">
+
+                <div class="mb-2 w-75 mx-auto">
+                    <label for="student_ID" class="form-label">Enter Student ID </label>
+                    <input type="text" class="form-control" id="student_ID" name="student_ID" maxlength="10" required>
+                </div>
+                <div class="mt-3 d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" value="submit" class="btn btn-outline-danger">Check Result</button>
+                </div>
+            </form>
+
+            <?php
+            if ($showquerysuccess) {
+                echo '<label class="form-label my-3">Results of student with Student ID ' . $studID . '</label>';
+            }
+            ?>
+            <div class="d-flex justify-content-evenly">
+                <div class="d-inline-block mb-2 col-md-8">
+                    <div class="table-responsive">
+                        <?php
+                        if ($showquerysuccess) {
+
+                            if (mysqli_num_rows($searchrslt) >= 1) {
+                                echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student Name</th>
+                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+                                while ($row = mysqli_fetch_array($searchrslt)) {
+                                    echo '<tr>
+                                        <td>' . $row['stud_name'] . '</td>
+                                        <td>' . $row['test_diffi'] . '</td>
+                                        <td>' . $row['score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                                }
+                                echo '
+                            </tbody>
+                            </table>';
+                            } else {
+                                echo '<h4>No tests given yet</h4>';
+                            }
+                        };
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="color:#D91A21;">
+
+            <!-- Test Log -->
+            <label for="corr_opt" class="form-label">Recent Results</label>
+            <div class="d-flex justify-content-evenly">
+                <div class="d-inline-block mb-2 col-md-8">
+                    <div class="table-responsive">
+
+                        <?php
+                        $logs_rslt = mysqli_query($conn, "SELECT * FROM `testlog` ORDER BY `dt` DESC");
+                        if (mysqli_num_rows($logs_rslt) >= 1) {
+                            echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student ID</th>
+                                            <th scope="col">Student Name</th>
+                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+                            $tstcount = 5;
+                            while ($row = mysqli_fetch_array($logs_rslt) and $tstcount > 0) {
+                                $tstcount -= 1;
+                                echo '<tr>
+                                        <td>' . $row['stud_ID'] . '</td>
+                                        <td>' . $row['stud_name'] . '</td>
+                                        <td>' . $row['test_diffi'] . '</td>
+                                        <td>' . $row['score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                            }
+                            echo '
+                            </tbody>
+                            </table>';
+                        } else {
+                            echo '<h4>No tests given yet</h4>';
+                        }
+                        ?>
+                    </div>
+                </div>
             </div>
 
             <hr style="color:#D91A21;">

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 19, 2022 at 08:06 AM
+-- Generation Time: Jan 18, 2023 at 07:08 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -50,6 +50,29 @@ INSERT INTO `admins` (`admin_ID`, `email`, `password`, `username`, `first_name`,
 (2, 'samyak.jasani@somaiya.edu', 'asd', 'sam', 'Samyak', 'Jasani', 'Computer Engineering', 'Male', '2011-01-26', '9969304171', '2022-11-16 16:54:18'),
 (3, 'sarang.kulkarni@somaiya.edu', 'asd', 'sak', 'Sarang', 'Kulkarni', 'Computer Engineering', 'Male', '2002-08-05', '9421062179', '2022-11-16 16:54:18'),
 (4, 'sarvesh@gmail.com', 'asdf', 'viva1', 'asdf', 'asddf', 'Electronics and Telecommunication', 'Other', '2022-11-24', '345678654', '2022-11-17 11:10:50');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cstm_quizes`
+--
+
+CREATE TABLE `cstm_quizes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(20) NOT NULL,
+  `start_date` date NOT NULL,
+  `start_time` time NOT NULL,
+  `end_date` date NOT NULL,
+  `end_time` time NOT NULL,
+  `dt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `cstm_quizes`
+--
+
+INSERT INTO `cstm_quizes` (`id`, `name`, `start_date`, `start_time`, `end_date`, `end_time`, `dt`) VALUES
+(1, 'chaptertesting', '2023-01-18', '10:00:00', '2023-01-19', '11:00:00', '2023-01-18 18:05:23');
 
 -- --------------------------------------------------------
 
@@ -306,6 +329,40 @@ INSERT INTO `questions3` (`que_ID`, `que_desc`, `que_img`, `appearance`, `dt`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quiz_chaptertesting`
+--
+
+CREATE TABLE `quiz_chaptertesting` (
+  `que_ID` int(5) NOT NULL,
+  `que_desc` text NOT NULL,
+  `opt_desc1` text NOT NULL,
+  `is_corr1` int(1) NOT NULL,
+  `opt_desc2` text NOT NULL,
+  `is_corr2` int(1) NOT NULL,
+  `opt_desc3` text NOT NULL,
+  `is_corr3` int(1) NOT NULL,
+  `opt_desc4` text NOT NULL,
+  `is_corr4` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `quiz_chaptertesting`
+--
+
+INSERT INTO `quiz_chaptertesting` (`que_ID`, `que_desc`, `opt_desc1`, `is_corr1`, `opt_desc2`, `is_corr2`, `opt_desc3`, `is_corr3`, `opt_desc4`, `is_corr4`) VALUES
+(1, 'tghdsadsf', 'dssd', 0, 'dsfg', 0, 'asdfg', 1, 'asdfgh', 0),
+(2, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(3, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed2', 0, '3we4d2', 0),
+(4, 'tghdsadsf', 'dssd', 1, 'dsfg', 0, 'asdfg', 0, 'asdfgh', 0),
+(5, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 1, 'fawfawfa', 0),
+(6, '2asdfsa', '234dews', 0, '2345ter', 0, '3w24ed3', 0, '3we4d3', 1),
+(7, 'tghdsadsf', 'dssd', 0, 'dsfg', 1, 'asdfg', 0, 'asdfgh', 0),
+(8, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(9, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed4', 0, '3we4d4', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `testlog`
 --
 
@@ -379,6 +436,12 @@ ALTER TABLE `admins`
   ADD PRIMARY KEY (`admin_ID`);
 
 --
+-- Indexes for table `cstm_quizes`
+--
+ALTER TABLE `cstm_quizes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `options1`
 --
 ALTER TABLE `options1`
@@ -421,6 +484,12 @@ ALTER TABLE `questions3`
   ADD PRIMARY KEY (`que_ID`);
 
 --
+-- Indexes for table `quiz_chaptertesting`
+--
+ALTER TABLE `quiz_chaptertesting`
+  ADD PRIMARY KEY (`que_ID`);
+
+--
 -- Indexes for table `testlog`
 --
 ALTER TABLE `testlog`
@@ -441,6 +510,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `admins`
   MODIFY `admin_ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `cstm_quizes`
+--
+ALTER TABLE `cstm_quizes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `options1`
@@ -483,6 +558,12 @@ ALTER TABLE `questions2`
 --
 ALTER TABLE `questions3`
   MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `quiz_chaptertesting`
+--
+ALTER TABLE `quiz_chaptertesting`
+  MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `testlog`

@@ -21,66 +21,18 @@ $showqueryerrormsg = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    $studID = $_POST['student_ID'];
 
-    // Adding Question to Database
-    $que = $_POST['question'];
-    $difficulty = 'questions' . $_POST["quediff"];
-    $file = $_FILES['file'];
+    $searchrslt = mysqli_query($conn, "SELECT * FROM `users` WHERE `student_ID` = $studID");
 
-    if (is_uploaded_file($file['tmp_name'])) {
-        if ($file['size'] <= 16777215) {
-            if ($file['type'] == 'jpg' || 'png' || 'jpeg') {
-                $image = $file['tmp_name'];
-                $sql1 = "INSERT INTO `$difficulty` (`que_desc`, `que_img`) VALUES ('$que', '" . mysqli_escape_string($conn, file_get_contents($image)) . "')";
-
-                $result1 = mysqli_query($conn, $sql1);
-                if ($result1) {
-                    $showquerysuccess = true;
-                } else {
-                    $showqueryerror = true;
-                    $showqueryerrormsg = 'Something went wrong. Question didnt added';
-                }
-            } else {
-                $showqueryerror = true;
-                $showqueryerrormsg = 'Invalid File Format. Suggested formats are jpg, png and jpeg';
-            }
-        } else {
-            $showqueryerror = true;
-            $showqueryerrormsg = 'File Size limit exceeded. File size must be within 16 MB';
-        }
+    if ($searchrslt) {
+        $showquerysuccess = true;
     } else {
-        $sql1 = "INSERT INTO `$difficulty` (`que_desc`) VALUES ('$que')";
-
-        $result1 = mysqli_query($conn, $sql1);
-        if ($result1) {
-            $showquerysuccess = true;
-        } else {
-            $showqueryerror = true;
-            $showqueryerrormsg = 'Something went wrong. Question didnt added';
-        }
-    }
-
-    // Adding answers to Database 
-    $sql2 = "SELECT * FROM `$difficulty` ORDER BY que_ID DESC LIMIT 1;";
-    $result2 = mysqli_query($conn, $sql2);
-    $r2_row = mysqli_fetch_assoc($result2);
-    $queID = $r2_row['que_ID'];
-
-    $option = 'options' . $_POST["quediff"];
-    // corr_opt
-
-    for ($x = 1; $x <= 4; $x++) {
-        $opt_desc = $_POST['opt' . $x];
-
-        if ($x ==  $_POST['corr_opt']) {
-            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`, `correct_ans`) VALUES ('$opt_desc', '$queID', 1);";
-        } else {
-            $sql = "INSERT INTO `$option` (`opt_desc`, `opt_for_QID`) VALUES ('$opt_desc', '$queID');";
-        }
-
-        $result = mysqli_query($conn, $sql);
+        $showqueryerror = true;
+        $showqueryerrormsg = 'Something went wrong. Unable to find the Student.';
     }
 }
+
 
 
 ?>
@@ -117,19 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- <body> -->
     <?php require "_header.php";
 
-    if ($showquerysuccess) {
-
-        echo '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Success!</strong> Your Question has been successfully added.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';
-    };
     if ($showqueryerror) {
 
         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Oops!</strong>' . $showqueryerrormsg . '
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>';    
+                </div>';
     };
 
     ?>
@@ -143,19 +88,108 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <hr style="color:#D91A21;">
 
-            <div style="height: 700px;"></div>
+            <form action="ViewStudent.php" method="POST" enctype="multipart/form-data">
 
-            <hr style="color:#D91A21;">
+                <div class="mb-2 w-75 mx-auto">
+                    <label for="student_ID" class="form-label">Enter Student ID </label>
+                    <input type="text" class="form-control" id="student_ID" name="student_ID" maxlength="10" required>
+                </div>
+                <div class="mt-3 d-grid gap-2 col-6 mx-auto">
+                    <button type="submit" value="submit" class="btn btn-outline-danger">View Student</button>
+                </div>
+            </form>
+
+            <?php
+            if ($showquerysuccess) {
+
+                while ($row = mysqli_fetch_array($searchrslt)) {
+
+                    echo '
+                            <div class="d-flex justify-content-evenly">
+                                <div class="form-container d-flex flex-column">
+                                    <h2 class="mx-4" style="color: #B81F24;">Personal Details</h2>
+                                    <hr style="color:#D91A21;">
+                                    
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="d-inline-block mb-2 col-5">
+                                            <label class="input-label form-label">Name</label>
+                                            <label class="output-label form-label"> ' . $row['first_name'] . ' ' . $row['last_name'] . ' </label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">UserName</label>
+                                            <label class="output-label form-label">' . $row['username'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">Student ID</label>
+                                            <label class="output-label form-label">' . $row['student_ID'] . '</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">Roll Number</label>
+                                            <label class="output-label form-label">' . $row['roll_no'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">Division</label>
+                                            <label class="output-label form-label">' . $row['division'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">Semester</label>
+                                            <label class="output-label form-label">' . $row['semester'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-2">
+                                            <label class="input-label form-label">Year</label>
+                                            <label class="output-label form-label">' . $row['year'] . '</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="d-inline-block mb-2 col-4">
+                                            <label class="input-label form-label">Department</label>
+                                            <label class="output-label form-label">' . $row['department'] . '</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-evenly">
+                                        <div class="d-inline-block mb-2 col-4">
+                                            <label class="input-label form-label">Contact</label>
+                                            <label class="output-label form-label">' . $row['mobile_no'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-4">
+                                            <label class="input-label form-label">Email ID</label>
+                                            <label class="output-label form-label">' . $row['email'] . '</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="d-flex align-items-end justify-content-evenly">
+                                        <div class="d-inline-block mb-2 col-3">
+                                            <label class="input-label form-label">Date of Birth</label>
+                                            <label class="output-label form-label">' . $row['dob'] . '</label>
+                                        </div>
+                                        <div class="d-inline-block mb-2 col-3">
+                                            <label class="input-label form-label">Gender</label>
+                                            <label class="output-label form-label">' . $row['gender'] . '</label>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>';
+                };
+            }
+            ?>
         </div>
-    </div>
+
+        <hr style="color:#D91A21;">
 
 
-    <div class="my-5"></div>
 
-    <!-- Footer -->
-    <?php require "_footer.php" ?>
+        <div class="my-5"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+        <!-- Footer -->
+        <?php require "_footer.php" ?>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 

@@ -82,7 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
     <!-- <body> -->
     <?php require "_header.php" ?>
-    
+
     <?php
     if ($showquerysuccess) {
 
