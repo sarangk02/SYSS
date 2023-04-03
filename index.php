@@ -173,7 +173,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=3">Take Quiz</a></button>
                             </div>
                         </div>
-                        <div class="card" style="width: 15rem;">
+                        <!-- <div class="card" style="width: 15rem;">
                             <img src="/syss/assets/images/card_dynamic.png" class="card-img-top p-3" alt="...">
                             <div class="card-body d-flex flex-column justify-content-between">
                                 <h5 class="card-title">Dynamic</h5>
@@ -181,7 +181,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, minus?.</p>
                                 <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=4">Take Quiz</a></button>
                             </div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

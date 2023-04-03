@@ -91,8 +91,9 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
                                 $date_diff_end = date_diff(date_create($row['end_date']), date_create($todaydate))->format("%R%a");
 
                                 // echo '<br>'.$row['end_date'].' '.$row['start_time'];
-                                $datetime_diff_start = date_diff(date_create($todaydate . ' ' . $todaytime), date_create($row['end_date'] . ' ' . $row['start_time']))->format("%H:%I:%S (Full days: %a)");
-                                echo "<br> HEREEE " . $datetime_diff_start. 'ENDSSSSSSSSSSS';
+
+                                // $datetime_diff_start = date_diff(date_create($todaydate . ' ' . $todaytime), date_create($row['end_date'] . ' ' . $row['start_time']))->format("%H:%I:%S (Full days: %a)");
+                                // echo "<br> HEREEE " . $datetime_diff_start. 'ENDSSSSSSSSSSS';
 
                                 // if (($date_diff_start >= 0) and ($date_diff_end <= 0)) {
                                 echo '  <tr class="align-middle">

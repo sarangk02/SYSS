@@ -32,7 +32,7 @@
             <?php
             if ($_SESSION['loggedin_user'] == true) {
                 echo
-                '<li class=" nav-item"><a class="sub-nav-links nav-link" href="#contact">Contact</a></li>
+                '<li class=" nav-item"><a class="sub-nav-links nav-link" href="Index.php#contact">Contact</a></li>
                 <li class=" nav-item"><a class="sub-nav-links nav-link" href="ActiveQuiz.php">Active Quiz</a></li>';
             };
 

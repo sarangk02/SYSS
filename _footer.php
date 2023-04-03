@@ -1,4 +1,4 @@
-<footer>
+<footer class="mt-auto">
     <div class="container d-flex p-2">
         <div class="mx-auto d-flex flex-column justify-content-center align-content-around">
             <ul class="d-flex justify-content-evenly" style="list-style: none; padding-left: 0;">
@@ -17,7 +17,7 @@
     </div>
 
     <div class="container-fluid text-center text-white" style="background-color: #00397A; padding: 1vh;">
-        <p class="footer-links my-2">Guided By : <a href="">Prof. Aarti Sahitya</a></p>
+        <p class="footer-links my-2">Guided By : <a href="">Dr. Aarti Sahitya</a></p>
         <p class="footer-links m-0">Developed By : <a href="">Yash Chheda</a>, <a href="">Sarang Kulkarni</a>, <a href="">Sarvesh Kulkarni</a>, <a href="">Samyak Jasani</a></p>
     </div>
 </footer>
