@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2023 at 07:08 AM
+-- Generation Time: Apr 29, 2023 at 04:20 PM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -46,10 +46,10 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`admin_ID`, `email`, `password`, `username`, `first_name`, `last_name`, `department`, `gender`, `dob`, `mobile_no`, `dt`) VALUES
-(1, 'test@gmail.com', 'tess', 'tess', 'tess', 'tess', 'Informatin Technology', 'Female', '2022-11-08', '9876543210', '2022-11-16 16:54:18'),
-(2, 'samyak.jasani@somaiya.edu', 'asd', 'sam', 'Samyak', 'Jasani', 'Computer Engineering', 'Male', '2011-01-26', '9969304171', '2022-11-16 16:54:18'),
-(3, 'sarang.kulkarni@somaiya.edu', 'asd', 'sak', 'Sarang', 'Kulkarni', 'Computer Engineering', 'Male', '2002-08-05', '9421062179', '2022-11-16 16:54:18'),
-(4, 'sarvesh@gmail.com', 'asdf', 'viva1', 'asdf', 'asddf', 'Electronics and Telecommunication', 'Other', '2022-11-24', '345678654', '2022-11-17 11:10:50');
+(1, 'test@gmail.com', 'tess', 'tess', 'tess', 'tess', 'IT', 'Female', '2022-11-08', '9876543210', '2022-11-16 16:54:18'),
+(2, 'samyak.jasani@somaiya.edu', 'asd', 'sam', 'Samyak', 'Jasani', 'COMPS', 'Male', '2011-01-26', '9969304171', '2022-11-16 16:54:18'),
+(3, 'sarang.kulkarni@somaiya.edu', 'asd', 'sak', 'Sarang', 'Kulkarni', 'COMPS', 'Male', '2002-08-05', '9421062179', '2022-11-16 16:54:18'),
+(4, 'sarvesh@gmail.com', 'asdf', 'viva1', 'asdf', 'asddf', 'EXTC', 'Other', '2022-11-24', '345678654', '2022-11-17 11:10:50');
 
 -- --------------------------------------------------------
 
@@ -60,10 +60,14 @@ INSERT INTO `admins` (`admin_ID`, `email`, `password`, `username`, `first_name`,
 CREATE TABLE `cstm_quizes` (
   `id` int(11) NOT NULL,
   `name` varchar(20) NOT NULL,
+  `dept` text NOT NULL,
+  `year` text NOT NULL,
+  `division` text NOT NULL,
   `start_date` date NOT NULL,
   `start_time` time NOT NULL,
   `end_date` date NOT NULL,
   `end_time` time NOT NULL,
+  `hosted_by_username` varchar(255) NOT NULL,
   `dt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -71,10 +75,11 @@ CREATE TABLE `cstm_quizes` (
 -- Dumping data for table `cstm_quizes`
 --
 
-INSERT INTO `cstm_quizes` (`id`, `name`, `start_date`, `start_time`, `end_date`, `end_time`, `dt`) VALUES
-(1, 'Samyaks-Quiz', '2023-01-21', '20:00:00', '2023-02-02', '22:00:00', '2023-01-20 04:29:18'),
-(13, 'test1', '2023-04-26', '10:54:00', '2023-04-30', '12:57:00', '2023-04-03 13:24:41'),
-(14, 'test2', '2023-04-29', '15:00:00', '2023-04-30', '22:00:00', '2023-04-28 13:08:20');
+INSERT INTO `cstm_quizes` (`id`, `name`, `dept`, `year`, `division`, `start_date`, `start_time`, `end_date`, `end_time`, `hosted_by_username`, `dt`) VALUES
+(1, 'Samyaks-Quiz', 'EXTC', 'FY', 'B', '2023-01-21', '20:00:00', '2023-02-02', '22:00:00', 'tess', '2023-01-20 04:29:18'),
+(13, 'test1', 'EXTC', 'TY', 'A', '2023-04-26', '10:54:00', '2023-04-30', '12:57:00', 'tess', '2023-04-03 13:24:41'),
+(14, 'test2', 'IT', 'TY', 'A', '2023-04-29', '15:00:00', '2023-04-30', '22:00:00', 'SamJ123', '2023-04-28 13:08:20'),
+(15, 'test3', 'EXTC', 'FY', 'B', '2023-04-28', '14:02:00', '2023-05-06', '14:07:00', 'tess', '2023-04-29 08:32:59');
 
 -- --------------------------------------------------------
 
@@ -351,7 +356,8 @@ CREATE TABLE `quizlog` (
 --
 
 INSERT INTO `quizlog` (`id`, `QuizID`, `QuizName`, `StudID`, `StudName`, `Score`, `Wrong_answers`, `dt`) VALUES
-(1, 13, 'test1', 123456, 'tess tess', 3, ' 1 2 5 6 7 8', '2023-04-28 18:31:21');
+(1, 13, 'test1', 123456, 'tess tess', 3, ' 1, 2, 5, 6, 7, 8', '2023-04-28 18:31:21'),
+(2, 13, 'test1', 123456, 'tess tess', 1, '1,2,3,4,5,6,8,9', '2023-04-29 08:55:14');
 
 -- --------------------------------------------------------
 
@@ -458,6 +464,40 @@ INSERT INTO `quiz_test2` (`que_ID`, `que_desc`, `opt_desc1`, `is_corr1`, `opt_de
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quiz_test3`
+--
+
+CREATE TABLE `quiz_test3` (
+  `que_ID` int(5) NOT NULL,
+  `que_desc` text NOT NULL,
+  `opt_desc1` text NOT NULL,
+  `is_corr1` int(1) NOT NULL,
+  `opt_desc2` text NOT NULL,
+  `is_corr2` int(1) NOT NULL,
+  `opt_desc3` text NOT NULL,
+  `is_corr3` int(1) NOT NULL,
+  `opt_desc4` text NOT NULL,
+  `is_corr4` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `quiz_test3`
+--
+
+INSERT INTO `quiz_test3` (`que_ID`, `que_desc`, `opt_desc1`, `is_corr1`, `opt_desc2`, `is_corr2`, `opt_desc3`, `is_corr3`, `opt_desc4`, `is_corr4`) VALUES
+(1, 'sheesh', 'dssd', 0, 'dsfg', 0, 'asdfg', 1, 'asdfgh', 0),
+(2, 'siuuuuuu', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(3, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed2', 0, '3we4d2', 0),
+(4, 'tghdsadsf', 'dssd', 1, 'dsfg', 0, 'asdfg', 0, 'asdfgh', 0),
+(5, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 1, 'fawfawfa', 0),
+(6, '2asdfsa', '234dews', 0, '2345ter', 0, '3w24ed3', 0, '3we4d3', 1),
+(7, 'tghdsadsf', 'dssd', 0, 'dsfg', 1, 'asdfg', 0, 'asdfgh', 0),
+(8, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(9, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed4', 0, '3we4d4', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `testlog`
 --
 
@@ -501,7 +541,7 @@ CREATE TABLE `users` (
   `roll_no` int(2) NOT NULL,
   `division` text NOT NULL,
   `semester` int(1) NOT NULL,
-  `year` int(1) NOT NULL,
+  `year` text NOT NULL,
   `department` text NOT NULL,
   `gender` text NOT NULL,
   `dob` date NOT NULL,
@@ -514,13 +554,13 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`sr`, `email`, `password`, `student_ID`, `username`, `first_name`, `last_name`, `roll_no`, `division`, `semester`, `year`, `department`, `gender`, `dob`, `mobile_no`, `dt`) VALUES
-(1, 'samyak.jasani@somaiya.edu', 'asdf', 2343212, 'SamJ123', 'Samyak', 'Jasani', 56, 'A', 5, 3, 'Informatin Technology', 'Male', '0000-00-00', '2346789765', '0000-00-00 00:00:00'),
-(2, 'sarvesh.k@somaiya.edu', 'asdf', 2343214, 'sarvesh1233', 'Sarvesh ', 'Kulkarni', 24, 'A', 5, 3, 'Computer Engineering', 'Male', '0000-00-00', '2346921765', '0000-00-00 00:00:00'),
-(3, 'yash.ch@somaiya.edu', 'asdf', 2343215, 'Yashbc', 'Yash', 'Chheda', 45, 'A', 5, 3, 'Informatin Technology', 'Male', '0000-00-00', '2346789911', '0000-00-00 00:00:00'),
-(4, 'sarang.kulkarni@somaiya.edu', 'asdf', 2343213, 'sak', 'Sarang', 'Kulkarni', 63, 'A', 5, 3, 'Computer Engineering', 'Male', '0000-00-00', '2932789765', '0000-00-00 00:00:00'),
-(5, 'harshita.paatil@somaiya.edu', 'asdf', 2343210, 'hp2002', 'Harshita', 'Patil', 15, 'B', 4, 2, 'Artificial Inteligence and Data Science', 'Female', '0000-00-00', '2932789838', '0000-00-00 00:00:00'),
-(6, 'tess@somaiya.edu', 'tess', 123456, 'tess', 'tess', 'tess', 13, 'B', 2, 1, 'Electronics and Telecommunication', 'Other', '0000-00-00', '3108576653', '0000-00-00 00:00:00'),
-(7, 'tahseentamboli@gmail.com', 'Abc@1234', 454755, 'tst1', 'tahseen', 'tamboli', 83, 'A', 5, 3, 'Informatin Technology', 'Female', '2004-09-29', '9876543210', '2022-11-17 05:28:36');
+(1, 'samyak.jasani@somaiya.edu', 'asdf', 2343212, 'SamJ123', 'Samyak', 'Jasani', 56, 'A', 5, 'TY', 'IT', 'Male', '0000-00-00', '2346789765', '0000-00-00 00:00:00'),
+(2, 'sarvesh.k@somaiya.edu', 'asdf', 2343214, 'sarvesh1233', 'Sarvesh ', 'Kulkarni', 24, 'A', 5, 'TY', 'COMPS', 'Male', '0000-00-00', '2346921765', '0000-00-00 00:00:00'),
+(3, 'yash.ch@somaiya.edu', 'asdf', 2343215, 'Yashbc', 'Yash', 'Chheda', 45, 'A', 5, 'TY', 'IT', 'Male', '0000-00-00', '2346789911', '0000-00-00 00:00:00'),
+(4, 'sarang.kulkarni@somaiya.edu', 'asdf', 2343213, 'sak', 'Sarang', 'Kulkarni', 63, 'A', 5, 'TY', 'COMPS', 'Male', '0000-00-00', '2932789765', '0000-00-00 00:00:00'),
+(5, 'harshita.paatil@somaiya.edu', 'asdf', 2343210, 'hp2002', 'Harshita', 'Patil', 15, 'B', 4, 'SY', 'AIDS', 'Female', '0000-00-00', '2932789838', '0000-00-00 00:00:00'),
+(6, 'tess@somaiya.edu', 'tess', 123456, 'tess', 'tess', 'tess', 13, 'B', 2, 'FY', 'EXTC', 'Other', '0000-00-00', '3108576653', '0000-00-00 00:00:00'),
+(7, 'tahseentamboli@gmail.com', 'Abc@1234', 454755, 'tst1', 'tahseen', 'tamboli', 83, 'A', 5, 'LY', 'IT', 'Female', '2004-09-29', '9876543210', '2022-11-17 05:28:36');
 
 --
 -- Indexes for dumped tables
@@ -605,6 +645,12 @@ ALTER TABLE `quiz_test2`
   ADD PRIMARY KEY (`que_ID`);
 
 --
+-- Indexes for table `quiz_test3`
+--
+ALTER TABLE `quiz_test3`
+  ADD PRIMARY KEY (`que_ID`);
+
+--
 -- Indexes for table `testlog`
 --
 ALTER TABLE `testlog`
@@ -630,7 +676,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `cstm_quizes`
 --
 ALTER TABLE `cstm_quizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `options1`
@@ -678,7 +724,7 @@ ALTER TABLE `questions3`
 -- AUTO_INCREMENT for table `quizlog`
 --
 ALTER TABLE `quizlog`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `quiz_samyaks-quiz`
@@ -696,6 +742,12 @@ ALTER TABLE `quiz_test1`
 -- AUTO_INCREMENT for table `quiz_test2`
 --
 ALTER TABLE `quiz_test2`
+  MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `quiz_test3`
+--
+ALTER TABLE `quiz_test3`
   MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
