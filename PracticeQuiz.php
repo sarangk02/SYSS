@@ -7,59 +7,48 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
     exit;
 }
 
-require_once '_dbconnect.php';
 
-// SQ = Session Quiz 
-$SQid = $_GET['catid'];
-
-// Getting details of quiz from cstm_quizes Database 
-$quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` where `id` = $SQid");
-$cstm_row = mysqli_fetch_row($quizesAvialable);
-$SQname = $cstm_row[1];
-$start = $cstm_row[2] . ' ' . $cstm_row[3];
-$end = $cstm_row[4] . ' ' . $cstm_row[5];
-$today = date('Y-m-d') . ' ' . date('H:i:s');
-if ($start < $today) {
-    if ($end > $today) {
-    } else {
-        header("location: ActievQuiz.php");
-    }
-} else {
-    header("location: ActievQuiz.php");
+switch ($_GET['catid']) {
+    case 1:
+        $diff = 1;
+        $diffname = 'Basic';
+        $quedb = 'questions1';
+        $ansdb = 'options1';
+        break;
+    case 2:
+        $diff = 2;
+        $diffname = 'Intermediate';
+        $quedb = 'questions2';
+        $ansdb = 'options2';
+        break;
+    case 3:
+        $diff = 3;
+        $diffname = 'Advanced';
+        $quedb = 'questions3';
+        $ansdb = 'options3';
+        break;
+    case 4:
+        $diff = 4;
+        $diffname = 'Dynamic';
+        break;
 }
 
-// Getting Quiz Details from its own Quiz Database
-$SQdatabase = 'quiz_' . $SQname;
-$SQqyuery =  "SELECT * FROM $SQdatabase";
-$SQrslt = mysqli_query($conn, $SQqyuery);
-$SQcount = mysqli_num_rows($SQrslt);
+require_once '_dbconnect.php';
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && ($diff = 1 || 2 || 3)) {
 
     $score = 0;
-    $Wrong_answers = array();
 
-    for ($x = 1; $x <= $SQcount; $x++) {
+    for ($x = 1; $x <= 10; $x++) {
         $selection = $_POST["que-id" . $x];
-        $anssql = ("SELECT * from $SQdatabase where `que_ID` = '$x'");
+        $anssql = ("SELECT * from $ansdb where `opt_desc` = '$selection'");
         $ansrslt = mysqli_query($conn, $anssql);
+        // print_r($ansrslt);
         $ansrow = mysqli_fetch_assoc($ansrslt);
-
-        if ($ansrow['is_corr1'] == 1 && $selection == $ansrow['opt_desc1']) {
+        if ($ansrow['correct_ans'] == 1) {
             $score = $score + 1;
-        } elseif ($ansrow['is_corr2'] == 1 && $selection == $ansrow['opt_desc2']) {
-            $score = $score + 1;
-        } elseif ($ansrow['is_corr3'] == 1 && $selection == $ansrow['opt_desc3']) {
-            $score = $score + 1;
-        } elseif ($ansrow['is_corr4'] == 1 && $selection == $ansrow['opt_desc4']) {
-            $score = $score + 1;
-        } else {
-            array_push($Wrong_answers, $x);
         }
     }
-
-    $Wrong_answers = implode(",", $Wrong_answers);
 
     $user = $_SESSION['username'];
 
@@ -67,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_num_rows($result) == 1) {
         while ($row = mysqli_fetch_array($result)) {
             $student_ID = $row["student_ID"];
-            $student_name = $row["first_name"] . " " . $row["last_name"];
+            $name = $row["first_name"] . " " . $row["last_name"];
 
-            $log_rslt = mysqli_query($conn, "INSERT INTO `QuizLog` (`QuizID`, `QuizName`, `StudID`, `StudName`, `Score`, `Wrong_answers`) VALUES ('$SQid', '$SQname', '$student_ID', '$student_name', '$score', '$Wrong_answers');");
+            $log_rslt = mysqli_query($conn, "INSERT INTO `testlog` (`stud_ID`, `stud_name`, `test_diffi`, `score`) VALUES ('$student_ID', '$name', '$diffname', '$score');");
         }
     }
-    header("location: ActiveQuiz.php");
+    header("location: index.php");
 }
 
 ?>
@@ -101,7 +90,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Javascript  -->
     <script src="/syss/assets/script.js"></script>
 
+    <!-- Styling -->
     <style>
+        /* disables text selection  */
         body {
             -webkit-user-select: none;
             /* Safari */
@@ -112,7 +103,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     </style>
 
-    <title><?php echo $SQname; ?></title>
+
+    <!-- <script>
+        const onConfirmRefresh = function(event) {
+            event.preventDefault();
+            return event.returnValue = "Are you sure you want to leave the page?";
+        }
+
+        window.addEventListener("beforeunload", onConfirmRefresh, {
+            capture: true
+        });
+    </script> -->
+
+    <title>Practice Quiz</title>
 
 </head>
 <!-- <body> -->
@@ -136,45 +139,63 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="container">
         <div>
-            <h1 class="text-center" style="color: #B81F24;"><?php echo $SQname; ?> Quiz</h1>
+            <h1 class="text-center" style="color: #B81F24;">Practice Quiz</h1>
         </div>
         <hr style="color:#D91A21;">
 
 
 
-        <form action="Quiz.php?catid=<?php echo $SQid ?>" method="post">
+        <form action="PracticeQuiz.php?catid=<?php echo $diff ?>" method="post">
             <?php
 
-            for ($count = 1; $count <= $SQcount; $count++) {
-                $que_sql = "SELECT * from $SQdatabase WHERE `que_ID` = $count";
-                $que_query_result = mysqli_query($conn, $que_sql);
+            $sqlforqueno = "SELECT * from $quedb";
+            $quenoresult = mysqli_query($conn, $sqlforqueno);
+            $randup = mysqli_num_rows($quenoresult);
 
-                $SQqueryRow = mysqli_fetch_row($que_query_result);
-                $que_desc = $SQqueryRow[1];
-                $que_opt_1 = $SQqueryRow[2];
-                $que_opt_2 = $SQqueryRow[4];
-                $que_opt_3 = $SQqueryRow[6];
-                $que_opt_4 = $SQqueryRow[8];
+
+            for ($count = 1; $count <= 10; $count++) {
+
+                $qid = mt_rand(1, $randup);
+                $que_sql = "SELECT * from $quedb WHERE `que_ID` = $qid";
+                $que_result = mysqli_query($conn, $que_sql);
+
+                if (mysqli_num_rows($que_result) == 1) {
+                    while ($que_row = mysqli_fetch_assoc($que_result)) {
+                        $que_desc = $que_row['que_desc'];
+                        $que_img = $que_row['que_img'];
+                    }
             ?>
-                <div class="container">
-                    <div class="question-container my-5">
-                        <p class="text-muted font-italic" id="que-id<?php echo $count ?>">Question <?php echo $count ?>
-                        </p>
-                        <p class="fs-5"> <?php echo $que_desc ?> </p>
 
-                        <ul class="list-unstyled mx-3">
+                    <div class="container">
+                        <div class="question-container my-5">
+                            <p class="text-muted font-italic" id="que-id<?php echo $count ?>">Question <?php echo $count ?>
+                            </p>
+                            <p class="fs-5"> <?php echo $que_desc ?> </p>
+                            <?php if ($que_img) { ?>
+                                <img height="250" class="my-3" src="<?php echo 'data:image/jpg;charset=utf8;base64,' . base64_encode($que_img) ?>" alt="Question Image">
+                            <?php } ?>
 
-                            <?php
-                            echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $que_opt_1 . '">' . $que_opt_1 . '</li>';
-                            echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $que_opt_2 . '">' . $que_opt_2 . '</li>';
-                            echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $que_opt_3 . '">' . $que_opt_3 . '</li>';
-                            echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $que_opt_4 . '">' . $que_opt_4 . '</li>';
-                            ?>
-                        </ul>
+                            <ul class="list-unstyled mx-3">
+
+                                <?php
+                                $opt_sql = "SELECT * from $ansdb WHERE `opt_for_QID` = $qid";
+                                $opt_result = mysqli_query($conn, $opt_sql);
+                                // print_r($opt_result);
+                                if (mysqli_num_rows($opt_result) >= 1) {
+                                    while ($opt_row = mysqli_fetch_assoc($opt_result)) {
+                                        echo '<li class="my-2"><input class="mx-1" type="radio" required name="que-id' . $count . '" value="' . $opt_row['opt_desc'] . '">' . $opt_row['opt_desc'] . '</li>';
+                                    }
+                                }
+                                ?>
+                            </ul>
+                        </div>
+                        <hr>
                     </div>
-                    <hr>
-                </div>
-            <?php } ?>
+
+            <?php
+                }
+            } ?>
+
 
             <div class="d-flex justify-content-center">
 

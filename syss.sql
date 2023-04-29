@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 03, 2023 at 03:29 PM
+-- Generation Time: Apr 29, 2023 at 07:08 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -72,8 +72,9 @@ CREATE TABLE `cstm_quizes` (
 --
 
 INSERT INTO `cstm_quizes` (`id`, `name`, `start_date`, `start_time`, `end_date`, `end_time`, `dt`) VALUES
-(1, 'Samyaks-Quiz', '2023-01-21', '10:00:00', '2023-02-02', '11:00:00', '2023-01-20 04:29:18'),
-(13, 'test1', '2023-04-04', '20:54:00', '2023-04-06', '18:57:00', '2023-04-03 13:24:41');
+(1, 'Samyaks-Quiz', '2023-01-21', '20:00:00', '2023-02-02', '22:00:00', '2023-01-20 04:29:18'),
+(13, 'test1', '2023-04-26', '10:54:00', '2023-04-30', '12:57:00', '2023-04-03 13:24:41'),
+(14, 'test2', '2023-04-29', '15:00:00', '2023-04-30', '22:00:00', '2023-04-28 13:08:20');
 
 -- --------------------------------------------------------
 
@@ -331,6 +332,30 @@ INSERT INTO `questions3` (`que_ID`, `que_desc`, `que_img`, `appearance`, `dt`) V
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `quizlog`
+--
+
+CREATE TABLE `quizlog` (
+  `id` int(5) NOT NULL,
+  `QuizID` int(5) NOT NULL,
+  `QuizName` varchar(20) NOT NULL,
+  `StudID` int(10) NOT NULL,
+  `StudName` text NOT NULL,
+  `Score` int(2) NOT NULL,
+  `Wrong_answers` varchar(50) NOT NULL,
+  `dt` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `quizlog`
+--
+
+INSERT INTO `quizlog` (`id`, `QuizID`, `QuizName`, `StudID`, `StudName`, `Score`, `Wrong_answers`, `dt`) VALUES
+(1, 13, 'test1', 123456, 'tess tess', 3, ' 1 2 5 6 7 8', '2023-04-28 18:31:21');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `quiz_samyaks-quiz`
 --
 
@@ -386,6 +411,40 @@ CREATE TABLE `quiz_test1` (
 --
 
 INSERT INTO `quiz_test1` (`que_ID`, `que_desc`, `opt_desc1`, `is_corr1`, `opt_desc2`, `is_corr2`, `opt_desc3`, `is_corr3`, `opt_desc4`, `is_corr4`) VALUES
+(1, 'lets go budyy', 'dssd', 0, 'dsfg', 0, 'asdfg', 1, 'asdfgh', 0),
+(2, 'siuuuuuu', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(3, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed2', 0, '3we4d2', 0),
+(4, 'tghdsadsf', 'dssd', 1, 'dsfg', 0, 'asdfg', 0, 'asdfgh', 0),
+(5, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 1, 'fawfawfa', 0),
+(6, '2asdfsa', '234dews', 0, '2345ter', 0, '3w24ed3', 0, '3we4d3', 1),
+(7, 'tghdsadsf', 'dssd', 0, 'dsfg', 1, 'asdfg', 0, 'asdfgh', 0),
+(8, 'rtgfdw', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
+(9, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed4', 0, '3we4d4', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quiz_test2`
+--
+
+CREATE TABLE `quiz_test2` (
+  `que_ID` int(5) NOT NULL,
+  `que_desc` text NOT NULL,
+  `opt_desc1` text NOT NULL,
+  `is_corr1` int(1) NOT NULL,
+  `opt_desc2` text NOT NULL,
+  `is_corr2` int(1) NOT NULL,
+  `opt_desc3` text NOT NULL,
+  `is_corr3` int(1) NOT NULL,
+  `opt_desc4` text NOT NULL,
+  `is_corr4` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `quiz_test2`
+--
+
+INSERT INTO `quiz_test2` (`que_ID`, `que_desc`, `opt_desc1`, `is_corr1`, `opt_desc2`, `is_corr2`, `opt_desc3`, `is_corr3`, `opt_desc4`, `is_corr4`) VALUES
 (1, 'sheesh', 'dssd', 0, 'dsfg', 0, 'asdfg', 1, 'asdfgh', 0),
 (2, 'siuuuuuu', 'asdasd', 0, 'wqesdf', 0, 'fawfa', 0, 'fawfawfa', 1),
 (3, '2asdfsa', '234dews', 1, '2345ter', 0, '3w24ed2', 0, '3we4d2', 0),
@@ -522,6 +581,12 @@ ALTER TABLE `questions3`
   ADD PRIMARY KEY (`que_ID`);
 
 --
+-- Indexes for table `quizlog`
+--
+ALTER TABLE `quizlog`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `quiz_samyaks-quiz`
 --
 ALTER TABLE `quiz_samyaks-quiz`
@@ -531,6 +596,12 @@ ALTER TABLE `quiz_samyaks-quiz`
 -- Indexes for table `quiz_test1`
 --
 ALTER TABLE `quiz_test1`
+  ADD PRIMARY KEY (`que_ID`);
+
+--
+-- Indexes for table `quiz_test2`
+--
+ALTER TABLE `quiz_test2`
   ADD PRIMARY KEY (`que_ID`);
 
 --
@@ -559,7 +630,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT for table `cstm_quizes`
 --
 ALTER TABLE `cstm_quizes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `options1`
@@ -604,6 +675,12 @@ ALTER TABLE `questions3`
   MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `quizlog`
+--
+ALTER TABLE `quizlog`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `quiz_samyaks-quiz`
 --
 ALTER TABLE `quiz_samyaks-quiz`
@@ -613,6 +690,12 @@ ALTER TABLE `quiz_samyaks-quiz`
 -- AUTO_INCREMENT for table `quiz_test1`
 --
 ALTER TABLE `quiz_test1`
+  MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `quiz_test2`
+--
+ALTER TABLE `quiz_test2`
   MODIFY `que_ID` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --

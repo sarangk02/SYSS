@@ -31,11 +31,15 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
     <link rel="stylesheet" href="/syss/assets/style.css">
     <script src="/syss/assets/script.js"></script>
 
-    <title>Proflie | <?php echo $first_name ?></title>
+    <title>Proflie |
+        <?php echo $first_name ?>
+    </title>
 
 </head>
 
 <!-- <body oncontextmenu="return false;"> -->
+
+<!-- <body> -->
 
 <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
     <!-- Navbar -->
@@ -73,67 +77,128 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
         <div class="form-container d-flex flex-column">
             <h2 class="mx-4" style="color: #B81F24;">Personal Details</h2>
             <hr style="color:#D91A21;">
+
+            <!-- outer container  -->
+            <div class="row px-3">
+                <div class="col">
+                    <div>
+                        <label class="d-inline-block input-label form-label">Name : </label>
+                        <label class="d-inline-block form-label">
+                            <?php echo $first_name . " " . $last_name ?>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="d-inline-block input-label form-label">UserName</label>
+                        <label class="d-inline-block output-label form-label">
+                            <?php echo $username ?>
+                        </label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div>
+                        <label class="d-inline-block input-label form-label">Name : </label>
+                        <label class="d-inline-block output-label form-label">
+                            <?php echo $first_name . " " . $last_name ?>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="d-inline-block input-label form-label">UserName</label>
+                        <label class="d-inline-block output-label form-label">
+                            <?php echo $username ?>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <br><br><br><br>
+            <br><br>
+
+
             <!-- Name username, and Student ID -->
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-5">
                     <label class="input-label form-label">Name</label>
-                    <label class="output-label form-label"><?php echo $first_name . " " . $last_name ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $first_name . " " . $last_name ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">UserName</label>
-                    <label class="output-label form-label"><?php echo $username ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $username ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">Student ID</label>
-                    <label class="output-label form-label"><?php echo $student_ID ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $student_ID ?>
+                    </label>
                 </div>
             </div>
             <!-- Roll, Div, Sem, Year -->
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">Roll Number</label>
-                    <label class="output-label form-label"><?php echo $roll_no ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $roll_no ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">Division</label>
-                    <label class="output-label form-label"><?php echo $division ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $division ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">Semester</label>
-                    <label class="output-label form-label"><?php echo $semester ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $semester ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-2">
                     <label class="input-label form-label">Year</label>
-                    <label class="output-label form-label"><?php echo $year ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $year ?>
+                    </label>
                 </div>
             </div>
             <!-- Department -->
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-3">
                     <label class="input-label form-label">Department</label>
-                    <label class="output-label form-label"><?php echo $department ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $department ?>
+                    </label>
                 </div>
             </div>
             <!-- Contact and Email ID -->
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-4">
                     <label class="input-label form-label">Contact</label>
-                    <label class="output-label form-label"><?php echo $mobile_no ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $mobile_no ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-4">
                     <label class="input-label form-label">Email ID</label>
-                    <label class="output-label form-label"><?php echo $email ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $email ?>
+                    </label>
                 </div>
             </div>
             <!-- DOB and Gender -->
             <div class="d-flex align-items-end justify-content-evenly">
                 <div class="d-inline-block mb-2 col-3">
                     <label class="input-label form-label">Date of Birth</label>
-                    <label class="output-label form-label"><?php echo $dob ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $dob ?>
+                    </label>
                 </div>
                 <div class="d-inline-block mb-2 col-3">
                     <label class="input-label form-label">Gender</label>
-                    <label class="output-label form-label"><?php echo $gender ?></label>
+                    <label class="output-label form-label">
+                        <?php echo $gender ?>
+                    </label>
                 </div>
             </div>
 
@@ -144,44 +209,49 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
             <h2 class="mx-4" style="color: #B81F24;">Quiz Details</h2>
             <hr style="color:#D91A21;">
 
-            <!-- Test stat table -->
-            <!-- <div class="d-flex justify-content-evenly">
-                <div class="d-inline-block mb-2 col-4">
-                    <label class="input-label form-label">General Stats</label>
-                    <table class="profile-stat-table">
-                        <tr class="profile-stat-table-rows">
-                            <th class="profile-stat-table-header">Difficulty</th>
-                            <th class="profile-stat-table-header">Attempted</th>
-                            <th class="profile-stat-table-header">High Score</th>
-                        </tr>
-                        <tr class="profile-stat-table-rows">
-                            <td class="profile-stat-table-cell1">Basic</td>
-                            <td class="profile-stat-table-cell">4</td>
-                            <td class="profile-stat-table-cell">12</td>
-                        </tr>
-                        <tr class="profile-stat-table-rows">
-                            <td class="profile-stat-table-cell1">Intermediate</td>
-                            <td class="profile-stat-table-cell">2</td>
-                            <td class="profile-stat-table-cell">42</td>
-                            </td>
-                        <tr class="profile-stat-table-rows">
-                            <td class="profile-stat-table-cell1">Advanced</td>
-                            <td class="profile-stat-table-cell">5</td>
-                            <td class="profile-stat-table-cell">10</td>
-                        </tr>
-                        <tr class="profile-stat-table-rows">
-                            <td class="profile-stat-table-cell1">Dynamic</td>
-                            <td class="profile-stat-table-cell">7</td>
-                            <td class="profile-stat-table-cell">17</td>
-                        </tr>
-                    </table>
-                </div>
-            </div> -->
-
             <!-- Test Log -->
             <div class="d-flex justify-content-evenly">
                 <div class="d-inline-block mb-2 col-md-8">
                     <label class="input-label form-label">Test Log</label>
+                    <div class="table-responsive">
+
+                        <?php
+                        $logs_rslt = mysqli_query($conn, "SELECT * FROM `QuizLog` WHERE `StudID` = '$student_ID'");
+                        if (mysqli_num_rows($logs_rslt) >= 1) {
+                            echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Test Name</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date - Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+
+                            while ($row = mysqli_fetch_array($logs_rslt)) {
+                                echo '<tr>
+                                        <td>' . $row['QuizName'] . '</td>
+                                        <td>' . $row['Score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                            }
+                            echo '
+                            </tbody>
+                            </table>';
+                        } else {
+                            echo '<h4>No tests given yet</h4>';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+
+            <hr style="color:transparent; margin: auto; border:dashed 1px #971217;" class="mb-2 col-md-9">
+
+            <!-- Practice Quiz Log -->
+            <div class="d-flex justify-content-evenly">
+                <div class="d-inline-block mb-2 col-md-8">
+                    <label class="input-label form-label">Practice Quiz Log</label>
                     <div class="table-responsive">
 
                         <?php
@@ -190,9 +260,9 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
                             echo '<table class="table table-hover table-bordereless">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Quiz Level</th>
                                             <th scope="col">Score</th>
-                                            <th scope="col">Date</th>
+                                            <th scope="col">Date - Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>';
@@ -208,16 +278,13 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
                             </tbody>
                             </table>';
                         } else {
-                            echo '<h4>No tests given yet</h4>';
+                            echo '<h4>No practice Quizes Attempted yet</h4>';
                         }
                         ?>
                     </div>
                 </div>
             </div>
-        </div>
-        <hr style="color:#D91A21;">
-        <div>
-            <h5 class="text-center" style="color: #B81F24;">You have reached the Bottom of the page</h5>
+
         </div>
         <hr style="color:#D91A21;">
     </div>

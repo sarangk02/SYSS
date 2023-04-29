@@ -132,7 +132,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p style="text-shadow: 0 0 3px; ">Get Ready to Solve some Autometas</p>
             <?php
             if ($_SESSION['loggedin_user'] == true) {
-                echo '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#quiz-modal" style="background-color: #b81f24;">Take a Quiz</button>';
+                echo '<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#quiz-modal" style="background-color: #b81f24;">Take a Practice Quiz</button>';
             } ?>
         </div>
 
@@ -142,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h5 class="modal-title text-dark" id="quiz-modalLabel">SELECT QUIZ</h5>
+                        <h5 class="modal-title text-dark" id="quiz-modalLabel">SELECT PRACTICE QUIZ</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-black d-flex justify-content-evenly">
@@ -152,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h5 class="card-title">Basic</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Easy level questions</h6>
                                 <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, minus?.</p>
-                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=1">Take Quiz</a></button>
+                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="PracticeQuiz.php?catid=1">Take Quiz</a></button>
                             </div>
                         </div>
                         <div class="card" style="width: 15rem;">
@@ -161,7 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h5 class="card-title">Intermediate</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Medium level questions</h6>
                                 <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, minus?.</p>
-                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=2">Take Quiz</a></button>
+                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="PracticeQuiz.php?catid=2">Take Quiz</a></button>
                             </div>
                         </div>
                         <div class="card" style="width: 15rem;">
@@ -170,7 +170,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h5 class="card-title">Advanced</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Difficult level questions</h6>
                                 <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, minus?.</p>
-                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=3">Take Quiz</a></button>
+                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="PracticeQuiz.php?catid=3">Take Quiz</a></button>
                             </div>
                         </div>
                         <!-- <div class="card" style="width: 15rem;">
@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <h5 class="card-title">Dynamic</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">Mixture accordng to your skills</h6>
                                 <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, minus?.</p>
-                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="quiz.php?catid=4">Take Quiz</a></button>
+                                <button type="button" class="align-self-center btn btn-primary w-75" style="background-color: #00397A;"><a href="PracticeQuiz.php?catid=4">Take Quiz</a></button>
                             </div>
                         </div> -->
 

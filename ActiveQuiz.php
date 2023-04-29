@@ -84,33 +84,72 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
                             while ($row = mysqli_fetch_array($quizesAvialable)) {
 
                                 date_default_timezone_set("Asia/Kolkata");
-                                $todaydate = date("Y-m-d");
-                                $todaytime = date("h:i") . ':00';
 
-                                $date_diff_start = date_diff(date_create($todaydate), date_create($row['start_date']))->format("%R%a");
-                                $date_diff_end = date_diff(date_create($row['end_date']), date_create($todaydate))->format("%R%a");
+                                $start_date = $row['start_date'];
+                                $end_date = $row['end_date'];
+                                $today_date = date('Y-m-d');
 
-                                // echo '<br>'.$row['end_date'].' '.$row['start_time'];
 
-                                // $datetime_diff_start = date_diff(date_create($todaydate . ' ' . $todaytime), date_create($row['end_date'] . ' ' . $row['start_time']))->format("%H:%I:%S (Full days: %a)");
-                                // echo "<br> HEREEE " . $datetime_diff_start. 'ENDSSSSSSSSSSS';
+                                $start_time = $row['start_time'];
+                                $end_time = $row['end_time'];
+                                $today_time = date('H:i:s');
 
-                                // if (($date_diff_start >= 0) and ($date_diff_end <= 0)) {
+
+                                // if ($start_date < $today_date) {
+                                //     if ($end_date > $today_date) {
+                                //         echo 'Date True ';
+                                //     } else {
+                                //         echo 'Date False ';
+                                //     }
+                                // } else {
+                                //     echo 'Start data should be smaller than end date';
+                                // }
+
+                                // if ($start_time < $today_time) {
+                                //     if ($end_time > $today_time) {
+                                //         echo 'Time True';
+                                //     } else {
+                                //         echo 'Time False';
+                                //     }
+                                // } 
+                                // echo '<br>';
+
+                                $start = $start_date . ' ' . $start_time;
+                                $end = $end_date . ' ' . $end_time;
+                                $today = $today_date . ' ' . $today_time;
+
+
+                                // if ($start < $today) {
+                                //     if ($end > $today) {
+                                //         echo 'True ';
+                                //     } else {
+                                //         echo 'False ';
+                                //     }
+                                // } else {
+                                //     echo 'Start data should be smaller than end date';
+                                // }
+
+
                                 echo '  <tr class="align-middle">
                                             <td>' . $row['name'] . '</td>
                                             <td>' . $row['start_date'] . '</td>
                                             <td>' . $row['start_time'] . '</td>
                                             <td>' . $row['end_date'] . '</td>
                                             <td>' . $row['end_time'] . '</td>
-                                            <td>' . '<button type="button" class="btn btn-primary w-100" style="background-color: #00397A;"';
-                                // if(($todaytime >= $row['start_time']) and ($todaytime <= $row['end_time'])){
-                                if (($date_diff_start >= 0) and ($date_diff_end <= 0)) {
+                                            <td>' . '<button type="button" class="btn btn-primary w-100" style="background-color: #00397A;" ';
+
+                                if ($start < $today) {
+                                    if ($end > $today) {
+                                        echo '><a href="Quiz.php?catid=' . $row['id'] . '">Take Quiz</a>';
+                                    } else {
+                                        echo 'disabled>Quiz Expired';
+                                    }
                                 } else {
-                                    echo 'disabled';
+                                    echo 'disabled>Quiz Starting soon';
                                 }
-                                echo '>Take Quiz</button>' . '</td>
+
+                                echo '</button></td>
                                             </tr>';
-                                // }
                             }
                             echo '
                             </tbody>

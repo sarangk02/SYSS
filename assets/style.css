@@ -77,16 +77,13 @@ p.footer-links a:hover {
 
 .input-label {
     color: #B81F24;
-    font-size: 18px;
-    font-weight: 500;
+    font-size: 14px;
+    font-weight: 200;
 }
 
 .output-label {
     font-style: oblique;
     margin-top: -5px;
-    display: block;
-    border: 1px solid white;
-    box-shadow: inset 0 0 6px #B81F24;
     padding: 5px 5px 5px 10px;
 }
 
