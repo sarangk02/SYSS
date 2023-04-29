@@ -137,10 +137,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-auto my-1">
                         <select class="custom-select py-1 mr-sm-2 w-75" name="department" id="inlineFormCustomSelect">
                             <option selected>Select Department</option>
-                            <option value="Computer Engineering">COMPS</option>
-                            <option value="Electronics and Telecommunication">EXTC</option>
-                            <option value="Informatin Technology">IT</option>
-                            <option value="Artificial Inteligence and Data Science">AI-DS</option>
+                            <option value="COMPS">Computer Engineering</option>
+                            <option value="EXTC">Electronics and Telecommunication</option>
+                            <option value="IT">Informatin Technology</option>
+                            <option value="AIDS">Artificial Inteligence and Data Science</option>
                         </select>
                     </div>
                 </div>

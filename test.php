@@ -1,31 +1,44 @@
-<?php
-while ($SQqueRow = mysqli_fetch_array($SQrslt)) {
-    echo 'Question - ' . $SQqueRow['que_desc'];
+<!-- from ViewResults.php  -->
+<!-- Recent Test Log -->
+<?php if ($isSearched == false) { ?>
+                <label for="corr_opt" class="form-label">Recent Results</label>
+                <div class="d-flex justify-content-evenly">
+                    <div class="d-inline-block mb-2 col-md-8">
+                        <div class="table-responsive">
 
-    echo '<ul style="list-style-type:square;">';
-    if ($SQqueRow['is_corr1'] == 1) {
-        echo '<li class = "text-decoration-underline">' . $SQqueRow['opt_desc1'] . '</li>';
-    } else {
-        echo '<li>' . $SQqueRow['opt_desc1'] . '</li>';
-    }
-
-    if ($SQqueRow['is_corr2'] == 1) {
-        echo '<li class = "text-decoration-underline">' . $SQqueRow['opt_desc2'] . '</li>';
-    } else {
-        echo '<li>' . $SQqueRow['opt_desc2'] . '</li>';
-    }
-
-    if ($SQqueRow['is_corr3'] == 1) {
-        echo '<li class = "text-decoration-underline">' . $SQqueRow['opt_desc3'] . '</li>';
-    } else {
-        echo '<li>' . $SQqueRow['opt_desc3'] . '</li>';
-    }
-
-    if ($SQqueRow['is_corr4'] == 1) {
-        echo '<li class = "text-decoration-underline">' . $SQqueRow['opt_desc4'] . '</li>';
-    } else {
-        echo '<li>' . $SQqueRow['opt_desc4'] . '</li>';
-    }
-    echo '</ul>';
-    echo '<hr>';
-}
+                            <?php
+                            $logs_rslt = mysqli_query($conn, "SELECT * FROM `testlog` ORDER BY `dt` DESC");
+                            if (mysqli_num_rows($logs_rslt) >= 1) {
+                                echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Student ID</th>
+                                            <th scope="col">Student Name</th>
+                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+                                $tstcount = 5;
+                                while ($row = mysqli_fetch_array($logs_rslt) and $tstcount > 0) {
+                                    $tstcount -= 1;
+                                    echo '<tr>
+                                        <td>' . $row['stud_ID'] . '</td>
+                                        <td>' . $row['stud_name'] . '</td>
+                                        <td>' . $row['test_diffi'] . '</td>
+                                        <td>' . $row['score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                                }
+                                echo '
+                            </tbody>
+                            </table>';
+                            } else {
+                                echo '<h4>No tests given yet</h4>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>

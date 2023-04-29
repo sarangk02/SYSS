@@ -27,8 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $starttym = $_POST["quiz-start-time"] . ":00";
     $enddate = $_POST["quiz-end-date"];
     $endtym = $_POST["quiz-end-time"] . ":00";
+    $dept = $_POST['department'] ;
+    $year = $_POST['year'];
+    $division = $_POST['division'];
+    $hosted_by = $_SESSION['username'];
 
-    $QuizAdditionResult = mysqli_query($conn, "INSERT INTO `cstm_quizes` (`name`, `start_date`, `start_time`, `end_date`, `end_time`) VALUES ('$quizname', '$startdate', '$starttym', '$enddate', '$endtym')");
+    $QuizAdditionResult = mysqli_query($conn, "INSERT INTO `cstm_quizes` (`name`, `start_date`, `start_time`, `end_date`, `end_time`, `dept`, `year`, `division`,`hosted_by_username`) VALUES ('$quizname', '$startdate', '$starttym', '$enddate', '$endtym', '$dept', '$year', '$division', '$hosted_by')");
 
     if ($QuizAdditionResult) {
         $showquerysuccess = true;
@@ -168,7 +172,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 <!-- Modal -->
                 <div class="modal fade" id="inputquizname" tabindex="-1" aria-labelledby="quiznamemodallable" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="quiznamemodallable">Name your Quiz</h5>
@@ -177,30 +181,64 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="modal-body">
                                 <div class="container d-flex flex-column justify-content-around">
 
-                                    <div class="mb-2 d-flex flex-column">
-                                        <label for="quiz-name" class="form-label">Enter Name of the Quiz</label>
-                                        <input class="form-control" type="text" name="quiz-name" maxlength="49" required>
+                                    <div class="mb-2 d-flex justify-content-evenly">
+                                        <label for="quiz-name" class="form-label w-25">Name of the Quiz : </label>
+                                        <input class="form-control w-75" type="text" name="quiz-name" required>
+                                    </div>
+
+                                    <div class="my-2 d-flex justify-content-between align-items-center">
+                                        <label class="form-label">For : </label>
+                                        <div class="">
+                                            <select class="custom-select py-1 mr-sm-2" name="department" id="department" required>
+                                                <option selected>Select Department</option>
+                                                <option value="Computer Engineering">Computer Engineering</option>
+                                                <option value="Electronics and Telecommunication">Electronics and
+                                                    Telecommunication</option>
+                                                <option value="Informatin Technology">Informatin Technology</option>
+                                                <option value="Artificial Inteligence and Data Science">Artificial
+                                                    Inteligence and Data Science</option>
+                                            </select>
+                                        </div>
+                                        <div class="">
+                                            <select class="custom-select py-1 mr-sm-2" name="year" id="year" required>
+                                                <option selected>Select Year</option>
+                                                <option value="FY">First Year</option>
+                                                <option value="SY">Second Year</option>
+                                                <option value="TY">Third Year</option>
+                                                <option value="LY">Last Year</option>
+                                            </select>
+                                        </div>
+                                        <div class="">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="division" id="divisionA" value="A" required>
+                                                <label class="form-check-label" for="divisionA">A</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="radio" name="division" id="divisionB" value="B" required>
+                                                <label class="form-check-label" for="divisionB">B</label>
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div class="my-2 d-flex justify-content-around">
-                                        <div class="m-2 d-flex flex-column">
-                                            <label for="quiz-start-date" class="form-label">Starting Date</label>
-                                            <input class="form-control" type="date" name="quiz-start-date" id="quiz-start-date" required>
-                                        </div>
                                         <div class="m-2 d-flex flex-column">
                                             <label for="quiz-start-time" class="form-label">Starting Time</label>
                                             <input class="form-control" type="time" name="quiz-start-time" id="quiz-start-time" required>
                                         </div>
+                                        <div class="m-2 d-flex flex-column">
+                                            <label for="quiz-start-date" class="form-label">Starting Date</label>
+                                            <input class="form-control" type="date" name="quiz-start-date" id="quiz-start-date" required>
+                                        </div>
                                     </div>
 
                                     <div class="my-2 d-flex justify-content-around">
                                         <div class="m-2 d-flex flex-column">
-                                            <label for="quiz-end-date" class="form-label">Ending Date</label>
-                                            <input class="form-control" type="date" name="quiz-end-date" id="quiz-end-date" required>
-                                        </div>
-                                        <div class="m-2 d-flex flex-column">
                                             <label for="quiz-end-time" class="form-label">Ending Time</label>
                                             <input class="form-control" type="time" name="quiz-end-time" id="quiz-end-time" required>
+                                        </div>
+                                        <div class="m-2 d-flex flex-column">
+                                            <label for="quiz-end-date" class="form-label">Ending Date</label>
+                                            <input class="form-control" type="date" name="quiz-end-date" id="quiz-end-date" required>
                                         </div>
                                     </div>
 

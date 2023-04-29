@@ -14,18 +14,19 @@ $SQid = $_GET['catid'];
 
 // Getting details of quiz from cstm_quizes Database 
 $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` where `id` = $SQid");
-$cstm_row = mysqli_fetch_row($quizesAvialable);
-$SQname = $cstm_row[1];
-$start = $cstm_row[2] . ' ' . $cstm_row[3];
-$end = $cstm_row[4] . ' ' . $cstm_row[5];
+$cstm_row = mysqli_fetch_assoc($quizesAvialable);
+$SQname = $cstm_row['name'];
+
+$start = $cstm_row['start_date'] . ' ' . $cstm_row['start_time'];
+$end = $cstm_row['end_date'] . ' ' . $cstm_row['end_time'];
 $today = date('Y-m-d') . ' ' . date('H:i:s');
 if ($start < $today) {
     if ($end > $today) {
     } else {
-        header("location: ActievQuiz.php");
+        header("location: ActiveQuiz.php");
     }
 } else {
-    header("location: ActievQuiz.php");
+    header("location: ActiveQuiz.php");
 }
 
 // Getting Quiz Details from its own Quiz Database
@@ -149,12 +150,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $que_sql = "SELECT * from $SQdatabase WHERE `que_ID` = $count";
                 $que_query_result = mysqli_query($conn, $que_sql);
 
-                $SQqueryRow = mysqli_fetch_row($que_query_result);
-                $que_desc = $SQqueryRow[1];
-                $que_opt_1 = $SQqueryRow[2];
-                $que_opt_2 = $SQqueryRow[4];
-                $que_opt_3 = $SQqueryRow[6];
-                $que_opt_4 = $SQqueryRow[8];
+                $SQqueryRow = mysqli_fetch_assoc($que_query_result);
+                $que_desc = $SQqueryRow['que_desc'];
+                $que_opt_1 = $SQqueryRow['opt_desc1'];
+                $que_opt_2 = $SQqueryRow['opt_desc2'];
+                $que_opt_3 = $SQqueryRow['opt_desc3'];
+                $que_opt_4 = $SQqueryRow['opt_desc4'];
             ?>
                 <div class="container">
                     <div class="question-container my-5">

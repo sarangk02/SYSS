@@ -31,5 +31,4 @@ if (mysqli_num_rows($result) > 0) {
         $email = $row["email"];
         $dt = $row["dt"];
     }
-}    
-?>
+}

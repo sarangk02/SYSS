@@ -64,13 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <!-- Google script -->
     <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <meta name="google-signin-client_id"
-        content="22159779186-v4i4q28ohjt9a1geg5ph8fu3jj1b8smf.apps.googleusercontent.com">
+    <meta name="google-signin-client_id" content="22159779186-v4i4q28ohjt9a1geg5ph8fu3jj1b8smf.apps.googleusercontent.com">
 
     <!-- Custom CSS -->
     <link rel="icon" href="/syss/assets/images/SVVRed.png">
@@ -89,8 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <nav class="navbar navbar-expand-lg">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="/syss/index.php">
-                        <img src="/syss/assets/images/longlogo.png" alt="long_logo" height="100"
-                            class="d-inline-block align-text-top">
+                        <img src="/syss/assets/images/longlogo.png" alt="long_logo" height="100" class="d-inline-block align-text-top">
                     </a>
             </nav>
         </div>
@@ -126,8 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="d-flex justify-content-evenly">
                     <div class="mb-3 col-4 mx-auto">
                         <label for="student_ID" class="form-label">Student ID</label>
-                        <input type="text" class="form-control" id="student_ID" name="student_ID" maxlength="10"
-                            autofocus required>
+                        <input type="text" class="form-control" id="student_ID" name="student_ID" maxlength="10" autofocus required>
                         <div id="emailHelp" class="form-text">Enter your Somaiya Student ID</div>
                     </div>
                 </div>
@@ -163,53 +159,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3 col-2 mx-auto">
                         <label for="roll_no" class="form-label">Roll Number</label>
-                        <input type="number" class="form-control" id="roll_no" name="roll_no" min="1" max="99" size="2"
-                            maxlength="2" required>
+                        <input type="number" class="form-control" id="roll_no" name="roll_no" min="1" max="99" size="2" maxlength="2" required>
                     </div>
                     <div class="mb-3 col-2 mx-auto">
                         <label for="semester" class="form-label">Semester</label>
-                        <input type="number" class="form-control" id="semester" name="semester" min="1" max="8"
-                            maxlength="1" required>
+                        <input type="number" class="form-control" id="semester" name="semester" min="1" max="8" maxlength="1" required>
                     </div>
                     <div class="mb-3 col-2 mx-auto">
                         <label for="year" class="form-label">Year</label>
-                        <input type="number" class="form-control" id="year" name="year" min="1" max="4" maxlength="1"
-                            required>
+                        <div class="col-auto my-1">
+                            <select class="custom-select py-1 mr-sm-2 w-75" name="year" id="year">
+                                <option selected>Select Year</option>
+                                <option value="FY">First Year</option>
+                                <option value="SY">Second Year</option>
+                                <option value="TY">Third Year</option>
+                                <option value="LY">Last Year</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
+
                 <div class="mb-3 col-5 mx-auto">
                     <label for="department" class="form-label">Department</label>
                     <div class="col-auto my-1">
-                        <select class="custom-select py-1 mr-sm-2 w-75" name="department" id="inlineFormCustomSelect">
+                        <select class="custom-select py-1 mr-sm-2 w-75" name="department" id="department">
                             <option selected>Select Department</option>
-                            <option value="Computer Engineering">COMPS</option>
-                            <option value="Electronics and Telecommunication">EXTC</option>
-                            <option value="Informatin Technology">IT</option>
-                            <option value="Artificial Inteligence and Data Science">AI-DS</option>
-                        </select>
+                            <option value="COMPS">Computer Engineering</option>
+                            <option value="EXTC">Electronics and Telecommunication</option>
+                            <option value="IT">Informatin Technology</option>
+                            <option value="AIDS">Artificial Inteligence and Data Science</option>
+                        </select>>
                     </div>
                 </div>
 
                 <div class="d-flex justify-content-evenly">
                     <div class="mb-3 col-3 mx-auto">
                         <label for="mobile_no" class="form-label">Mobile Number</label>
-                        <input type="number" class="form-control" id="mobile_no" name="mobile_no" maxlength="10"
-                            required>
+                        <input type="number" class="form-control" id="mobile_no" name="mobile_no" maxlength="10" required>
                     </div>
                     <div class="mb-3 col-3 mx-auto">
                         <label for="dob" class="form-label">Date of Birth</label>
                         <input type="date" class="form-control" id="dob" name="dob" required>
                     </div>
                     <div class="mb-3 col-3 mx-auto">
-                        <label for="gender" pattern="\d{2}-\d{2}-\d{4}"  class="form-label">Gender</label>
+                        <label for="gender" pattern="\d{2}-\d{2}-\d{4}" class="form-label">Gender</label>
                         <br>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="gender" id="gender_male" value="Male">
                             <label class="form-check-label" for="gender_male">Male</label>
                         </div>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="gender" id="gender_female"
-                                value="Female">
+                            <input class="form-check-input" type="radio" name="gender" id="gender_female" value="Female">
                             <label class="form-check-label" for="gender_female">Female</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -231,8 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3 col-5 mx-auto">
                         <label for="confirm_password" class="form-label">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" name="confirm_password"
-                            required>
+                        <input type="password" class="form-control" id="confirm_password" name="confirm_password" required>
                     </div>
                 </div>
 
@@ -250,15 +250,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Footer -->
     <?php require "_footer.php" ?>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
 </body>
 

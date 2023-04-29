@@ -1,22 +1,17 @@
 <?php
-session_start();
 
-
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
-    header("location: login.php");
-    exit;
-}
+include('_session.php');
 
 if ($_SESSION['loggedin_admin'] == false || $_SESSION['loggedin_user'] == true) {
     header("location: index.php");
     exit;
 }
 
-include('_dbconnect.php');
 
 $showquerysuccess = false;
 $showqueryerror = false;
 $showqueryerrormsg = '';
+$isSearched = false;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -25,10 +20,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Adding Question to Database
     $studID = $_POST['student_ID'];
 
-    $searchrslt = mysqli_query($conn, "SELECT * FROM `testlog` WHERE `stud_ID` = $studID");
+    $searchrslt1 = mysqli_query($conn, "SELECT * FROM `quizlog` WHERE `StudID` = $studID");
+    $searchrslt2 = mysqli_query($conn, "SELECT * FROM `testlog` WHERE `stud_ID` = $studID");
 
-    if ($searchrslt) {
+    if ($searchrslt1 and $searchrslt2) {
         $showquerysuccess = true;
+        $isSearched = true;
     } else {
         $showqueryerror = true;
         $showqueryerrormsg = 'Something went wrong. Unable to find results.';
@@ -102,29 +99,65 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <?php
             if ($showquerysuccess) {
-                echo '<label class="form-label my-3">Results of student with Student ID ' . $studID . '</label>';
-            }
-            ?>
-            <div class="d-flex justify-content-evenly">
-                <div class="d-inline-block mb-2 col-md-8">
-                    <div class="table-responsive">
-                        <?php
-                        if ($showquerysuccess) {
+                echo '<p class="form-label input-label my-3 text-center">Results of student with Student ID ' . $studID . ' : <u>' . $first_name . ' ' . $last_name . '</u></p>';
 
-                            if (mysqli_num_rows($searchrslt) >= 1) {
+            ?>
+
+                <!-- Test Log -->
+                <div class="row text-center">
+                    <div class="col-md-6 mt-2">
+                        <p class="input-label form-label">Test Quiz Results</p>
+                        <div class="table-responsive">
+
+                            <?php
+
+                            if (mysqli_num_rows($searchrslt1) >= 1) {
                                 echo '<table class="table table-hover table-bordereless">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Student Name</th>
-                                            <th scope="col">Test Type</th>
+                                            <th scope="col">Test Name</th>
                                             <th scope="col">Score</th>
-                                            <th scope="col">Date</th>
+                                            <th scope="col">Date - Time</th>
                                         </tr>
                                     </thead>
                                     <tbody>';
-                                while ($row = mysqli_fetch_array($searchrslt)) {
+
+                                while ($row = mysqli_fetch_array($searchrslt1)) {
                                     echo '<tr>
-                                        <td>' . $row['stud_name'] . '</td>
+                                        <td>' . $row['QuizName'] . '</td>
+                                        <td>' . $row['Score'] . '</td>
+                                        <td>' . $row['dt'] . '</td>
+                                        </tr>';
+                                }
+                                echo '
+                            </tbody>
+                            </table>';
+                            } else {
+                                echo '<h5>No tests given yet</h5>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+
+                    <!-- Practice Quiz Log -->
+                    <div class="col-md-6 mt-2">
+                        <p class="input-label form-label">Practice Quiz Results</p>
+                        <div class="table-responsive">
+                            <?php
+
+                            if (mysqli_num_rows($searchrslt2) >= 1) {
+                                echo '<table class="table table-hover table-bordereless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Quiz Level</th>
+                                            <th scope="col">Score</th>
+                                            <th scope="col">Date - Time</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>';
+
+                                while ($row = mysqli_fetch_array($searchrslt2)) {
+                                    echo '<tr>
                                         <td>' . $row['test_diffi'] . '</td>
                                         <td>' . $row['score'] . '</td>
                                         <td>' . $row['dt'] . '</td>
@@ -134,57 +167,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </tbody>
                             </table>';
                             } else {
-                                echo '<h4>No tests given yet</h4>';
+                                echo '<h5>No practice Quizes Attempted yet</h5>';
                             }
-                        };
-                        ?>
+                            ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <hr style="color:#D91A21;">
-
-            <!-- Test Log -->
-            <label for="corr_opt" class="form-label">Recent Results</label>
-            <div class="d-flex justify-content-evenly">
-                <div class="d-inline-block mb-2 col-md-8">
-                    <div class="table-responsive">
-
-                        <?php
-                        $logs_rslt = mysqli_query($conn, "SELECT * FROM `testlog` ORDER BY `dt` DESC");
-                        if (mysqli_num_rows($logs_rslt) >= 1) {
-                            echo '<table class="table table-hover table-bordereless">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Student ID</th>
-                                            <th scope="col">Student Name</th>
-                                            <th scope="col">Test Type</th>
-                                            <th scope="col">Score</th>
-                                            <th scope="col">Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>';
-                            $tstcount = 5;
-                            while ($row = mysqli_fetch_array($logs_rslt) and $tstcount > 0) {
-                                $tstcount -= 1;
-                                echo '<tr>
-                                        <td>' . $row['stud_ID'] . '</td>
-                                        <td>' . $row['stud_name'] . '</td>
-                                        <td>' . $row['test_diffi'] . '</td>
-                                        <td>' . $row['score'] . '</td>
-                                        <td>' . $row['dt'] . '</td>
-                                        </tr>';
-                            }
-                            echo '
-                            </tbody>
-                            </table>';
-                        } else {
-                            echo '<h4>No tests given yet</h4>';
-                        }
-                        ?>
-                    </div>
-                </div>
-            </div>
+            <?php } ?>
 
             <hr style="color:#D91A21;">
         </div>

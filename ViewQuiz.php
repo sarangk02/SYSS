@@ -54,7 +54,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
 <!-- <body class="d-flex flex-column min-vh-100"> -->
     <?php
     require "_header.php";
-    ?>
+    ?>  
 
     <div id="contact" class="container position-relative">
 
@@ -65,7 +65,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
             <hr style="color:#D91A21;">
 
             <div class="d-flex justify-content-evenly">
-                <div class="d-inline-block my-2 col-md-10">
+                <div class="d-inline-block my-2 col">
                     <div class="table-responsive">
                         <?php
                         if (mysqli_num_rows($quizesAvialable) > 0) {
@@ -73,6 +73,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
                                     <thead>
                                         <tr>
                                             <th scope="col">Quiz Name</th>
+                                            <th scope="col">Scheduled for</th>
                                             <th scope="col">Start Date</th>
                                             <th scope="col">Start Time</th>
                                             <th scope="col">End Date</th>
@@ -87,6 +88,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
                                 $quiz_name = $Quiz_Available_Row['name'];
                                 echo '<tr>
                                             <td>' . $quiz_name . '</td>
+                                            <td>' . $Quiz_Available_Row['dept'] . '-' . $Quiz_Available_Row['year'] . '-' . $Quiz_Available_Row['division'] . '</td>
                                             <td>' . $Quiz_Available_Row['start_date'] . '</td>
                                             <td>' . $Quiz_Available_Row['start_time'] . '</td>
                                             <td>' . $Quiz_Available_Row['end_date'] . '</td>
@@ -103,41 +105,41 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
                                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">';
-                                $ques_selection_query = 'SELECT * from `quiz_' . $quiz_name . '`';
-                                $ques_selection_result = mysqli_query($conn, $ques_selection_query);
-                                $qcount = 0;
-                                while ($ques_selection_result_row = mysqli_fetch_array($ques_selection_result)) {
-                                    echo 'Question - ' . $ques_selection_result_row['que_desc'];
+                                                                    $ques_selection_query = 'SELECT * from `quiz_' . $quiz_name . '`';
+                                                                    $ques_selection_result = mysqli_query($conn, $ques_selection_query);
+                                                                    $qcount = 0;
+                                                                    while ($ques_selection_result_row = mysqli_fetch_array($ques_selection_result)) {
+                                                                        echo 'Question - ' . $ques_selection_result_row['que_desc'];
 
-                                    echo '<ul style="list-style-type:square;">';
-                                    if ($ques_selection_result_row['is_corr1'] == 1) {
-                                        echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc1'] . '</li>';
-                                    } else {
-                                        echo '<li>' . $ques_selection_result_row['opt_desc1'] . '</li>';
-                                    }
+                                                                        echo '<ul style="list-style-type:square;">';
+                                                                        if ($ques_selection_result_row['is_corr1'] == 1) {
+                                                                            echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc1'] . '</li>';
+                                                                        } else {
+                                                                            echo '<li>' . $ques_selection_result_row['opt_desc1'] . '</li>';
+                                                                        }
 
-                                    if ($ques_selection_result_row['is_corr2'] == 1) {
-                                        echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc2'] . '</li>';
-                                    } else {
-                                        echo '<li>' . $ques_selection_result_row['opt_desc2'] . '</li>';
-                                    }
+                                                                        if ($ques_selection_result_row['is_corr2'] == 1) {
+                                                                            echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc2'] . '</li>';
+                                                                        } else {
+                                                                            echo '<li>' . $ques_selection_result_row['opt_desc2'] . '</li>';
+                                                                        }
 
-                                    if ($ques_selection_result_row['is_corr3'] == 1) {
-                                        echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc3'] . '</li>';
-                                    } else {
-                                        echo '<li>' . $ques_selection_result_row['opt_desc3'] . '</li>';
-                                    }
+                                                                        if ($ques_selection_result_row['is_corr3'] == 1) {
+                                                                            echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc3'] . '</li>';
+                                                                        } else {
+                                                                            echo '<li>' . $ques_selection_result_row['opt_desc3'] . '</li>';
+                                                                        }
 
-                                    if ($ques_selection_result_row['is_corr4'] == 1) {
-                                        echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc4'] . '</li>';
-                                    } else {
-                                        echo '<li>' . $ques_selection_result_row['opt_desc4'] . '</li>';
-                                    }
-                                    echo '</ul>';
-                                    echo '<hr>';
-                                    $qcount += 1;
-                                }
-                                echo '<p>Total Questions ' . $qcount . '</p>
+                                                                        if ($ques_selection_result_row['is_corr4'] == 1) {
+                                                                            echo '<li class = "text-decoration-underline">' . $ques_selection_result_row['opt_desc4'] . '</li>';
+                                                                        } else {
+                                                                            echo '<li>' . $ques_selection_result_row['opt_desc4'] . '</li>';
+                                                                        }
+                                                                        echo '</ul>';
+                                                                        echo '<hr>';
+                                                                        $qcount += 1;
+                                                                    }
+                                                                    echo '<p>Total Questions ' . $qcount . '</p>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -145,6 +147,8 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    
                                                     <button type="button" data-bs-toggle="modal" data-bs-target="#DeleteQuizModal' . $i . '" class="btn btn-outline-danger mx-2">Delete Quiz</button>
                                                     <div class="modal fade" id="DeleteQuizModal' . $i . '" tabindex="-1" aria-labelledby="DeleteQuizModalLabel' . $i . '" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
@@ -164,11 +168,57 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes`");
                                                                         mysqli_query($conn, "DELETE FROM `cstm_quizes` WHERE `cstm_quizes`.`name` = '$quiz_name';");
                                                                         mysqli_query($conn, "DROP TABLE `syss`.`$temp_table`;");
                                                                     }
-                                                                    $i += 1;
                                                                 echo '</div>
                                                             </div>
                                                         </div>
                                                     </div>
+
+                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ViewSubmissions' . $i . '" class="btn btn-outline-danger">Submissions</button>
+                                                    <div class="modal fade" id="ViewSubmissions' . $i . '" tabindex="-1" aria-labelledby="DeleteQuizModalLabel' . $i . '" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                <h5 class="modal-title" id="ViewQuizModalLabel' . $i . '">Submissions - ' . $quiz_name . '</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">';
+                                                                // submissios related stuff = SRS
+                                                                $SRSquery = "SELECT * FROM `quizlog` where `QuizName` = '$quiz_name'";
+                                                                $SRSresult = mysqli_query($conn, $SRSquery);
+                                                                if (mysqli_num_rows($SRSresult) > 0) {
+                                                                    echo '<table class="table table-hover table-bordereless">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Student ID</th>
+                                                                                    <th scope="col">Student Name</th>
+                                                                                    <th scope="col">Score</th>
+                                                                                    <th scope="col">Wrong Answers</th>
+                                                                                    <th scope="col">Date - Time</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>';
+                                                                                while ($SRSrow = mysqli_fetch_array($SRSresult)) {
+                                                                                    echo '<tr>
+                                                                                            <td>' . $SRSrow['StudID'] . '</td>
+                                                                                            <td>' . $SRSrow['StudName'] . '</td>
+                                                                                            <td>' . $SRSrow['Score'] . '</td>
+                                                                                            <td>' . $SRSrow['Wrong_answers'] . '</td>
+                                                                                            <td>' . $SRSrow['dt'] . '</td>
+                                                                                            </tr>';
+                                                                                }
+                                                                    echo '</tbody>
+                                                                    </table>';
+                                                                } else {
+                                                                    echo '<h5 class="text-center">No Submissions yet</h5>';
+                                                                }
+                                                                $i += 1;
+                                                                echo '</div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                             </td>
                                         </tr>';

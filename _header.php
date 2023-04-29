@@ -12,15 +12,6 @@
                             <?php echo $_SESSION['username']; ?>
                         </button>
                         <ul class="dropdown-menu">
-                            <?php
-                            if ($_SESSION['loggedin_user'] == true) {
-                                echo
-                                '<li><a class="dropdown-item" href="profile.php">Profile</a></li>                                
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>';
-                            } ?>
-
                             <li><a class="dropdown-item" href="logout.php">Log Out</a></li>
                         </ul>
                     </div>
@@ -32,7 +23,7 @@
             <?php
             if ($_SESSION['loggedin_user'] == true) {
                 echo
-                '<li class=" nav-item"><a class="sub-nav-links nav-link" href="Index.php#contact">Contact</a></li>
+                '<li class=" nav-item"><a class="sub-nav-links nav-link" href="profile.php">Profile</a></li>
                 <li class=" nav-item"><a class="sub-nav-links nav-link" href="ActiveQuiz.php">Active Quiz</a></li>';
             };
 

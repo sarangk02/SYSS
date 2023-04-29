@@ -1,20 +1,13 @@
 <?php
-session_start();
 
-
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] != true) {
-    header("location: login.php");
-    exit;
-}
+include('_session.php');
 
 if ($_SESSION['loggedin_user'] == false || $_SESSION['loggedin_admin'] == true) {
     header("location: index.php");
     exit;
 }
 
-include('_dbconnect.php');
-
-$quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `start_date`");
+$quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept` = '$department' and `year` = '$year' and `division` = '$division'  ORDER BY `start_date`");
 
 
 ?>
@@ -43,11 +36,11 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
     <link rel="stylesheet" href="/syss/assets/style.css">
     <script src="/syss/assets/script.js"></script>
 
-    <title>View Quiz</title>
+    <title>Active Quiz</title>
 
 </head>
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg');" class="d-flex flex-column min-vh-100">
     <!-- <body> -->
     <?php
 
@@ -59,7 +52,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
 
         <div class="form-container">
             <div>
-                <h1 class="text-center">View Quizes</h1>
+                <h1 class="text-center">Active Quizes</h1>
             </div>
             <hr style="color:#D91A21;">
 
@@ -72,10 +65,10 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
                                     <thead>
                                         <tr>
                                             <th scope="col">Quiz Name</th>
-                                            <th scope="col">Start Date</th>
                                             <th scope="col">Start Time</th>
-                                            <th scope="col">End Date</th>
+                                            <th scope="col">Start Date</th>
                                             <th scope="col">End Time</th>
+                                            <th scope="col">End Date</th>
                                             <th scope="col">Quiz Action</th>
                                         </tr>
                                     </thead>
@@ -132,10 +125,10 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
 
                                 echo '  <tr class="align-middle">
                                             <td>' . $row['name'] . '</td>
-                                            <td>' . $row['start_date'] . '</td>
                                             <td>' . $row['start_time'] . '</td>
-                                            <td>' . $row['end_date'] . '</td>
+                                            <td>' . $row['start_date'] . '</td>
                                             <td>' . $row['end_time'] . '</td>
+                                            <td>' . $row['end_date'] . '</td>
                                             <td>' . '<button type="button" class="btn btn-primary w-100" style="background-color: #00397A;" ';
 
                                 if ($start < $today) {
@@ -155,7 +148,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` ORDER BY `st
                             </tbody>
                             </table>';
                         } else {
-                            echo '<h4 class="text-center">No quizes uploaded yet !!!</h4>';
+                            echo '<h4 class="text-center">No Active quizes  !!!</h4>';
                         };
                         ?>
 
