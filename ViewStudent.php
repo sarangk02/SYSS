@@ -14,6 +14,8 @@ if ($_SESSION['loggedin_admin'] == false || $_SESSION['loggedin_user'] == true) 
 
 include('_dbconnect.php');
 
+$SessionDept = $_SESSION['department'];
+
 $showquerysuccess = false;
 $showqueryerror = false;
 $showqueryerrormsg = '';
@@ -23,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $studID = $_POST['student_ID'];
 
-    $searchrslt = mysqli_query($conn, "SELECT * FROM `users` WHERE `student_ID` = $studID");
+    $searchrslt = mysqli_query($conn, "SELECT * FROM `users` WHERE `student_ID` = $studID and `department` = '$SessionDept';");
 
     if ($searchrslt) {
         $showquerysuccess = true;
@@ -62,8 +64,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>View Student</title>
 
 </head>
-
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')"
+    class="d-flex flex-column min-vh-100">
     <!-- <body> -->
     <?php require "_header.php";
 
@@ -98,100 +100,105 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </form>
 
             <?php if ($showquerysuccess) {
-                while ($row = mysqli_fetch_assoc($searchrslt)) {
+                if (mysqli_num_rows($searchrslt) > 0) {
+                    while ($row = mysqli_fetch_assoc($searchrslt)) {
 
             ?>
-                    <!-- Personal Information -->
-                    <div class="form-container row">
-                        <div class="col-md-6 my-2">
-                            <h2 class="mx-2" style="color: #B81F24;">Personal Details</h2>
-                            <hr style="color:#D91A21;">
-                            <div class="mx-4">
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Name : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['first_name'] . " " . $row['last_name'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Username : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['username'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Student ID : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['student_ID'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Contact : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['mobile_no'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Email ID : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['email'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Date of Birth : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['dob'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Gender : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['gender'] ?>
-                                    </label>
+                        <!-- Personal Information -->
+                        <div class="form-container row">
+                            <div class="col-md-6 my-2">
+                                <h2 class="mx-2" style="color: #B81F24;">Personal Details</h2>
+                                <hr style="color:#D91A21;">
+                                <div class="mx-4">
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Name : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['first_name'] . " " . $row['last_name'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Username : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['username'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Student ID : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['student_ID'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Contact : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['mobile_no'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Email ID : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['email'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Date of Birth : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['dob'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Gender : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['gender'] ?>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="col-md-6 my-2">
-                            <!-- Academic Information -->
-                            <h2 class="mx-2" style="color: #B81F24;">Academic Details</h2>
-                            <hr style="color:#D91A21;">
-                            <div class="mx-4">
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Roll Number : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['roll_no'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Division : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['division'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Semester : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['semester'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Year : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['year'] ?>
-                                    </label>
-                                </div>
-                                <div>
-                                    <label class="d-inline-block input-label form-label">Department : </label>
-                                    <label class="d-inline-block form-label">
-                                        <?php echo $row['department'] ?>
-                                    </label>
+                            <div class="col-md-6 my-2">
+                                <!-- Academic Information -->
+                                <h2 class="mx-2" style="color: #B81F24;">Academic Details</h2>
+                                <hr style="color:#D91A21;">
+                                <div class="mx-4">
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Roll Number : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['roll_no'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Division : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['division'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Semester : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['semester'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Year : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['year'] ?>
+                                        </label>
+                                    </div>
+                                    <div>
+                                        <label class="d-inline-block input-label form-label">Department : </label>
+                                        <label class="d-inline-block form-label">
+                                            <?php echo $row['department'] ?>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
             <?php }
+                } else {
+                    echo '<h2 class="text-center my-2">There is no sutdent with ID - ' . $studID . ' in your department</h2>';
+                }
             } ?>
+            
 
         </div>
     </div>

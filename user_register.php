@@ -189,6 +189,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <option value="EXTC">Electronics and Telecommunication</option>
                             <option value="IT">Informatin Technology</option>
                             <option value="AIDS">Artificial Inteligence and Data Science</option>
+                            <option value="BSH">Basic Sciences and Humanities</option>
                         </select>>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ if ($_SESSION['loggedin_admin'] == true || $_SESSION['loggedin_user'] == false) 
 
 <!-- <body> -->
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
     <?php require "_header.php"; ?>
 

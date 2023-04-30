@@ -120,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && ($diff = 1 || 2 || 3)) {
 </head>
 <!-- <body> -->
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); padding-bottom: 10vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <header>
         <!-- Navbar -->
         <div class="container">

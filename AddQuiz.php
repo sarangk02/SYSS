@@ -14,6 +14,8 @@ if ($_SESSION['loggedin_admin'] == false || $_SESSION['loggedin_user'] == true) 
 
 include('_dbconnect.php');
 
+$SessionDept = $_SESSION['department'];
+
 $showquerysuccess = false;
 $showqueryerror = false;
 $showqueryerrormsg = '';
@@ -27,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $starttym = $_POST["quiz-start-time"] . ":00";
     $enddate = $_POST["quiz-end-date"];
     $endtym = $_POST["quiz-end-time"] . ":00";
-    $dept = $_POST['department'] ;
+    $dept = $_POST['department'];
     $year = $_POST['year'];
     $division = $_POST['division'];
     $hosted_by = $_SESSION['username'];
@@ -128,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </head>
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <!-- <body> -->
     <?php
 
@@ -190,13 +192,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <label class="form-label">For : </label>
                                         <div class="">
                                             <select class="custom-select py-1 mr-sm-2" name="department" id="department" required>
-                                                <option selected>Select Department</option>
-                                                <option value="Computer Engineering">Computer Engineering</option>
-                                                <option value="Electronics and Telecommunication">Electronics and
-                                                    Telecommunication</option>
-                                                <option value="Informatin Technology">Informatin Technology</option>
-                                                <option value="Artificial Inteligence and Data Science">Artificial
-                                                    Inteligence and Data Science</option>
+                                                <option value="<?php echo $SessionDept ?>" selected disabled>
+                                                    <?php
+                                                    switch ($SessionDept) {
+                                                        case "COMPS":
+                                                            echo "Computer Engineering";
+                                                            break;
+                                                        case "EXTC":
+                                                            echo "Electronics and Telecommunication";
+                                                            break;
+                                                        case "IT":
+                                                            echo "Informatin Technology";
+                                                            break;
+                                                        case "AIDS":
+                                                            echo "Artificial Inteligence and Data Science";
+                                                            break;
+                                                        case "BSH":
+                                                            echo "Basic Sciences and Humanities";
+                                                            break;
+                                                        case "ALL":
+                                                            echo "We'll prefer not to upload quiz";
+                                                            break;
+                                                    }
+                                                    ?>
+                                                </option>
                                             </select>
                                         </div>
                                         <div class="">

@@ -114,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </head>
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <!-- <body> -->
     <?php
 

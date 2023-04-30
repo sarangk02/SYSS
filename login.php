@@ -26,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $_SESSION['username'] = $username;
                     $_SESSION['loggedin_admin'] = true;
                     $_SESSION['loggedin_user'] = false;
+                    $_SESSION['department'] = $row['department'];
                     header('location: index.php');
                 } else {
                     $showError = true;
@@ -45,8 +46,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     session_start();
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
-                    $_SESSION['loggedin_user'] = true;
                     $_SESSION['loggedin_admin'] = false;
+                    $_SESSION['loggedin_user'] = true;
+                    $_SESSION['department'] = $row['department'];
                     header('location: index.php');
                 } else {
                     $showError = true;
@@ -82,8 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>
 
 </head>
-<!-- <body> -->
-    <body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg'); height: 100vh">
+
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <!-- Navbar -->
     <header>
         <div class="container">

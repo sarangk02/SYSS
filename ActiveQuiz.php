@@ -40,7 +40,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
 
 </head>
 
-<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg');" class="d-flex flex-column min-vh-100">
+<body oncontextmenu="return false;" style="background-image: url('assets/images/default_bg.jpg')" class="d-flex flex-column min-vh-100">
     <!-- <body> -->
     <?php
 
