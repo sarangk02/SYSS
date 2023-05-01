@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 29, 2023 at 04:20 PM
+-- Generation Time: Apr 30, 2023 at 11:22 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.0.19
 
@@ -48,7 +48,7 @@ CREATE TABLE `admins` (
 INSERT INTO `admins` (`admin_ID`, `email`, `password`, `username`, `first_name`, `last_name`, `department`, `gender`, `dob`, `mobile_no`, `dt`) VALUES
 (1, 'test@gmail.com', 'tess', 'tess', 'tess', 'tess', 'IT', 'Female', '2022-11-08', '9876543210', '2022-11-16 16:54:18'),
 (2, 'samyak.jasani@somaiya.edu', 'asd', 'sam', 'Samyak', 'Jasani', 'COMPS', 'Male', '2011-01-26', '9969304171', '2022-11-16 16:54:18'),
-(3, 'sarang.kulkarni@somaiya.edu', 'asd', 'sak', 'Sarang', 'Kulkarni', 'COMPS', 'Male', '2002-08-05', '9421062179', '2022-11-16 16:54:18'),
+(3, 'sarang.kulkarni@somaiya.edu', 'asd', 'sak', 'Sarang', 'Kulkarni', 'ALL', 'Male', '2002-08-05', '9421062179', '2022-11-16 16:54:18'),
 (4, 'sarvesh@gmail.com', 'asdf', 'viva1', 'asdf', 'asddf', 'EXTC', 'Other', '2022-11-24', '345678654', '2022-11-17 11:10:50');
 
 -- --------------------------------------------------------
@@ -357,7 +357,7 @@ CREATE TABLE `quizlog` (
 
 INSERT INTO `quizlog` (`id`, `QuizID`, `QuizName`, `StudID`, `StudName`, `Score`, `Wrong_answers`, `dt`) VALUES
 (1, 13, 'test1', 123456, 'tess tess', 3, ' 1, 2, 5, 6, 7, 8', '2023-04-28 18:31:21'),
-(2, 13, 'test1', 123456, 'tess tess', 1, '1,2,3,4,5,6,8,9', '2023-04-29 08:55:14');
+(3, 15, 'test3', 123456, 'tess tess', 1, '1,2,3,4,5,6,8,9', '2023-04-30 07:54:44');
 
 -- --------------------------------------------------------
 
@@ -724,7 +724,7 @@ ALTER TABLE `questions3`
 -- AUTO_INCREMENT for table `quizlog`
 --
 ALTER TABLE `quizlog`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `quiz_samyaks-quiz`

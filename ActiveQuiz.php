@@ -9,10 +9,7 @@ if ($_SESSION['loggedin_user'] == false || $_SESSION['loggedin_admin'] == true) 
 
 $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept` = '$department' and `year` = '$year' and `division` = '$division'  ORDER BY `start_date`");
 
-
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -75,6 +72,8 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                     <tbody>';
 
                             while ($row = mysqli_fetch_array($quizesAvialable)) {
+                                $QuizName = $row['name'];
+                                $QuizGivenRslt = mysqli_query($conn, "SELECT * FROM `quizlog` WHERE `QuizName` = '$QuizName' and `StudID` = '$student_ID';");
 
                                 date_default_timezone_set("Asia/Kolkata");
 
@@ -82,63 +81,34 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                 $end_date = $row['end_date'];
                                 $today_date = date('Y-m-d');
 
-
                                 $start_time = $row['start_time'];
                                 $end_time = $row['end_time'];
                                 $today_time = date('H:i:s');
-
-
-                                // if ($start_date < $today_date) {
-                                //     if ($end_date > $today_date) {
-                                //         echo 'Date True ';
-                                //     } else {
-                                //         echo 'Date False ';
-                                //     }
-                                // } else {
-                                //     echo 'Start data should be smaller than end date';
-                                // }
-
-                                // if ($start_time < $today_time) {
-                                //     if ($end_time > $today_time) {
-                                //         echo 'Time True';
-                                //     } else {
-                                //         echo 'Time False';
-                                //     }
-                                // } 
-                                // echo '<br>';
 
                                 $start = $start_date . ' ' . $start_time;
                                 $end = $end_date . ' ' . $end_time;
                                 $today = $today_date . ' ' . $today_time;
 
-
-                                // if ($start < $today) {
-                                //     if ($end > $today) {
-                                //         echo 'True ';
-                                //     } else {
-                                //         echo 'False ';
-                                //     }
-                                // } else {
-                                //     echo 'Start data should be smaller than end date';
-                                // }
-
-
                                 echo '  <tr class="align-middle">
-                                            <td>' . $row['name'] . '</td>
+                                            <td>' . $QuizName . '</td>
                                             <td>' . $row['start_time'] . '</td>
                                             <td>' . $row['start_date'] . '</td>
                                             <td>' . $row['end_time'] . '</td>
                                             <td>' . $row['end_date'] . '</td>
-                                            <td>' . '<button type="button" class="btn btn-primary w-100" style="background-color: #00397A;" ';
+                                            <td>' . '<button type="button" class="btn btn-primary w-100" ';
 
                                 if ($start < $today) {
                                     if ($end > $today) {
-                                        echo '><a href="Quiz.php?catid=' . $row['id'] . '">Take Quiz</a>';
+                                        if (mysqli_num_rows($QuizGivenRslt) == 0) {
+                                            echo 'style="background-color: #00397A;"><a href="Quiz.php?catid=' . $row['id'] . '">Attempt Quiz</a>';
+                                        } else {
+                                            echo 'class="btn-success" style="background-color: green;" >Quiz Attempted';
+                                        }
                                     } else {
-                                        echo 'disabled>Quiz Expired';
+                                        echo 'style="background-color: #00397A;" disabled>Quiz Expired';
                                     }
                                 } else {
-                                    echo 'disabled>Quiz Starting soon';
+                                    echo 'style="background-color: #00397A;" disabled>Quiz Starting soon';
                                 }
 
                                 echo '</button></td>
@@ -152,14 +122,12 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                         };
                         ?>
 
-
                     </div>
                 </div>
             </div>
 
             <hr style="color:#D91A21;">
         </div>
-
 
     </div>
 

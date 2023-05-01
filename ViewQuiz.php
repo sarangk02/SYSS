@@ -189,7 +189,8 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                                                             <thead>
                                                                                 <tr>
                                                                                     <th scope="col">Student ID</th>
-                                                                                    <th scope="col">Student Name</th>
+                                                                                    <th scope="col">Roll Number</th>
+                                                                                    <th scope="col">Name</th>
                                                                                     <th scope="col">Score</th>
                                                                                     <th scope="col">Wrong Answers</th>
                                                                                     <th scope="col">Date - Time</th>
@@ -197,13 +198,18 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                                                             </thead>
                                                                             <tbody>';
                                     while ($SRSrow = mysqli_fetch_array($SRSresult)) {
-                                        echo '<tr>
-                                                                                            <td>' . $SRSrow['StudID'] . '</td>
+                                        $std_ID = $SRSrow['StudID'];
+                                        $SRSRollNumberRslt = mysqli_query($conn, "SELECT `roll_no` FROM `users` WHERE `student_ID` = $std_ID;");
+                                        while ($SRSrollRow = mysqli_fetch_assoc($SRSRollNumberRslt)) {
+                                            echo '<tr>
+                                                                                            <td>' . $std_ID . '</td>
+                                                                                            <td>' . $SRSrollRow['roll_no'] . '</td>
                                                                                             <td>' . $SRSrow['StudName'] . '</td>
                                                                                             <td>' . $SRSrow['Score'] . '</td>
                                                                                             <td>' . $SRSrow['Wrong_answers'] . '</td>
                                                                                             <td>' . $SRSrow['dt'] . '</td>
                                                                                             </tr>';
+                                        }
                                     }
                                     echo '</tbody>
                                                                     </table>';
