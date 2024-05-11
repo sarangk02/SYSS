@@ -97,18 +97,18 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                             <td>' . $row['end_date'] . '</td>
                                             <td>' . '<button type="button" class="btn btn-primary w-100" ';
 
-                                if ($start < $today) {
-                                    if ($end > $today) {
-                                        if (mysqli_num_rows($QuizGivenRslt) == 0) {
+                                if (mysqli_num_rows($QuizGivenRslt) == 0) {
+                                    if ($start < $today) {
+                                        if ($end > $today) {
                                             echo 'style="background-color: #00397A;"><a href="Quiz.php?catid=' . $row['id'] . '">Attempt Quiz</a>';
                                         } else {
-                                            echo 'class="btn-success" style="background-color: green;" >Quiz Attempted';
+                                            echo 'style="background-color: #00397A;" disabled>Quiz Expired';
                                         }
                                     } else {
-                                        echo 'style="background-color: #00397A;" disabled>Quiz Expired';
+                                        echo 'style="background-color: #00397A;" disabled>Quiz Starting soon';
                                     }
                                 } else {
-                                    echo 'style="background-color: #00397A;" disabled>Quiz Starting soon';
+                                    echo 'class="btn-success" style="background-color: green;" disabled>Quiz Attempted';
                                 }
 
                                 echo '</button></td>

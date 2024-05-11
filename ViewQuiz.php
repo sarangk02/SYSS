@@ -149,7 +149,7 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
 
                                                     
                                                     <button type="button" data-bs-toggle="modal" data-bs-target="#DeleteQuizModal' . $i . '" class="btn btn-outline-danger mx-2">Delete Quiz</button>
-                                                    <div class="modal fade" id="DeleteQuizModal' . $i . '" tabindex="-1" aria-labelledby="DeleteQuizModalLabel' . $i . '" aria-hidden="true">
+                                                    <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false"  id="DeleteQuizModal' . $i . '" tabindex="-1" aria-labelledby="DeleteQuizModalLabel' . $i . '" aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -172,9 +172,9 @@ $quizesAvialable = mysqli_query($conn, "SELECT * FROM `cstm_quizes` WHERE `dept`
                                                         </div>
                                                     </div>
 
-                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ViewSubmissions' . $i . '" class="btn btn-outline-danger">Submissions</button>
-                                                    <div class="modal fade" id="ViewSubmissions' . $i . '" tabindex="-1" aria-labelledby="DeleteQuizModalLabel' . $i . '" aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered modal-lg">
+                                                    <button type="button" data-bs-toggle="modal" data-bs-target="#ViewSubmissions' . $i . '" class="btn btn-outline-danger" aria-hidden="true">Submissions</button>
+                                                    <div class="modal fade" id="ViewSubmissions' . $i . '" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="ViewSubmissionsModalLabel' . $i . '" aria-hidden="true">
+                                                        <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                 <h5 class="modal-title" id="ViewQuizModalLabel' . $i . '">Submissions - ' . $quiz_name . '</h5>
